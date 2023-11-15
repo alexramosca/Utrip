@@ -1,13 +1,13 @@
 const express = require('express');
 const sequelize = require('./config/config.js')
+const User = require('./models/User.js')
+const Trip = require('./models/Trip.js')
+const User_trip = require('./models/User_trip.js')
 const app = express();
+const relationship = require('./models/Relationships.js')(User, Trip, User_trip)
 
-sequelize.authenticate().then(()=>{
-    console.log("Conexión a la base de datos exitosa")
-})
-
-
-
-app.listen(process.env.PORT || 3001, ()=>{
-    console.log("server running")
+sequelize.sync({alter: true}).then(()=>{
+    app.listen(process.env.PORT || 3001, ()=>{
+        console.log("server running")
+    })
 })
