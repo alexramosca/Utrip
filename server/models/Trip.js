@@ -6,6 +6,11 @@ const Trip = sequelize.define('Trip', {
     passagerLimit: {
         type: DataTypes.INTEGER,
         allowNull: false,
+    },
+    isFull: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
     }
 }, 
 {
