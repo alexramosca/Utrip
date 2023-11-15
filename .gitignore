@@ -1,0 +1,50 @@
+# Node modules
+node_modules/
+
+# Build files
+build/
+dist/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+
+# Dependency directory
+dependency/
+
+# Compiled binary add-ons
+*.o
+*.obj
+*.ko
+*.dll
+*.exe
+*.log
+*.so
+*.dylib
+*.bak
+*.pdf
+*.DS_Store
+Thumbs.db
+
+# Editor-specific files
+.vscode/
+.idea/
+
+# Local configuration
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+*.iml
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Production build
+build/
