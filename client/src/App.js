@@ -1,12 +1,21 @@
 
 import './App.css';
+import { Register } from './pages/Register';
+import { Home } from './pages/Home';
+import { Login } from './pages/Login';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello trip</h1>
-    </div>
-  );
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />}/>
+        <Route path="/register" element={<Register />}/>
+        <Route path="/login" element={<Login />}/>
+      </Routes>
+    </Router>
+  )
 }
 
 export default App;

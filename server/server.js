@@ -1,5 +1,6 @@
 const express = require('express');
 const sequelize = require('./config/config.js')
+const cors = require('cors')
 const app = express();
 app.use(express.json())
 //models
@@ -8,6 +9,7 @@ const Trip = require('./models/Trip.js')
 const User_trip = require('./models/User_trip.js')
 const relationship = require('./models/Relationships.js')(User, Trip, User_trip)
 //routes
+app.use(cors())
 app.use('/users',require('./routes/User.js'))
 app.use('/trips',require('./routes/Trip.js'))
 

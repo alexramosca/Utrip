@@ -7,6 +7,9 @@ const User_trip = sequelize.define('User_trip', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     }
-})
+},{
+    timestamps: false,
+}
+)
 
 module.exports = User_trip

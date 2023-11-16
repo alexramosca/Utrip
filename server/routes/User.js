@@ -4,8 +4,20 @@ const bcrypt = require('bcrypt')
 const router = express.Router();
 
 
-router.get('/', (req, res)=>{
-    res.send('here are the users')
+router.get('/', async (req, res)=>{
+    try{
+        const findUsers = await User.findAll()
+        if(findUsers){
+            res.status(200).json(findUsers)
+        }
+        else {
+            res.status(400).json({error: "Could not retrieve users"})
+        }
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({error: "Internal error"})
+    }
 })
 
 router.get('/:id', (req, res)=>{
