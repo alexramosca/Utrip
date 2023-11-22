@@ -1,10 +1,32 @@
 .App {
   text-align: center;
+  border: #282c34 solid 1px;
+  padding: 10px;
+  border-radius: 14px;
+}
+
+.green{
+  background-color: green;
+  color: antiquewhite;
+}
+.red{
+  background-color: red;
+  color: antiquewhite;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+}
+.formErrorMsgs{
+  color: red;
+  font-weight: bold;
+  font-size: small;
 }
 
 @media (prefers-reduced-motion: no-preference) {

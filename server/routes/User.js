@@ -39,6 +39,25 @@ router.post('/register', async(req, res) =>{
     
     
 })
+router.post('/checkEmail', async (req, res)=>{
+    const email = req.body.email;
+    try{
+        const user = await User.findOne({where: {email}})
+        if(user){
+        res.status(200).json({isAvailable: "false"})
+    }
+    else {
+        res.status(200).json({isAvailable: "true"})
+    }
+
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({error: "Internal error"})
+    }
+    
+
+})
 
 router.post('/login', async(req, res) =>{
     let {email, password}= req.body;
@@ -49,12 +68,11 @@ router.post('/login', async(req, res) =>{
             
             // compare passwords
             const validPassword =  bcrypt.compareSync(password, findUser.dataValues.password);
-            console.log(findUser)
             if(validPassword){
                 res.status(200).json({message:'success'});
             }
             else{
-                res.status(403).send('Invalid Password');
+                res.status(401).send('Invalid Password');
             }
         }
         else{

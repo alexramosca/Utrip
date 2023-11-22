@@ -4,6 +4,12 @@ const { DataTypes } = require("sequelize")
 
 
 const Trip = sequelize.define('Trip', {
+    TripId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    },
     from: {
         type: DataTypes.STRING,
         allowNull: false

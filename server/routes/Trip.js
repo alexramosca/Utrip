@@ -2,10 +2,28 @@ const express = require('express')
 const router = express.Router();
 const Trip = require('../models/Trip.js')
 const User_trip = require('../models/User_trip.js')
+const User = require('../models/User.js')
 
-router.get('/', (req, res)=>{
-    res.send('here are the trips')
-})
+router.get('/', async (req, res) => {
+    try {
+      const userTrips = await Trip.findAll({
+        include: [
+          {
+            model: User,
+            through: User_trip,
+            attributes: {
+              exclude: ['password']
+            }
+          },
+        ],
+      });
+  
+      res.json(userTrips);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
 router.get('/:id', (req, res)=>{
     res.send(`this is trip ${req.params.id}`)
@@ -20,7 +38,7 @@ router.post('/create', async (req, res)=>{
             const insertJoinTable = await User_trip.create({
                 isDriver: true,
                 UserId: userId,
-                TripId: createTrip.id
+                TripId: createTrip.TripId
             })
             if(insertJoinTable){
                 res.status(200).json({...createTrip.dataValues, ...insertJoinTable.dataValues})
