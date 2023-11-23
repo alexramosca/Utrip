@@ -25,9 +25,31 @@ router.get('/', async (req, res) => {
     }
   });
 
-router.get('/:id', (req, res)=>{
-    res.send(`this is trip ${req.params.id}`)
-})
+router.get('/:id', async (req, res)=>{
+  
+  try {
+    const userTrips = await Trip.findOne({
+      where: {
+        TripId: req.params.id
+      },
+      include: [
+        {
+          model: User,
+          through: User_trip,
+          attributes: {
+            exclude: ['password']
+          }
+        },
+      ],
+    });
+
+    res.json(userTrips);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 router.post('/create', async (req, res)=>{
     const trip = req.body
