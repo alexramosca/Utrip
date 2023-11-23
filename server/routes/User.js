@@ -1,7 +1,9 @@
 const express = require('express')
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const router = express.Router();
+require('dotenv').config();
 
 
 router.get('/', async (req, res)=>{
@@ -59,8 +61,11 @@ router.post('/checkEmail', async (req, res)=>{
 
 })
 
+
 router.post('/login', async(req, res) =>{
     let {email, password}= req.body;
+    const key = process.env.SECRETKEY
+    
 
     try{
         const findUser = await User.findOne({where: {email: email}})
@@ -69,6 +74,8 @@ router.post('/login', async(req, res) =>{
             // compare passwords
             const validPassword =  bcrypt.compareSync(password, findUser.dataValues.password);
             if(validPassword){
+                const token = jwt.sign({user: findUser}, key, {expiresIn: '2h'})
+                res.cookie('token', token, { httpOnly: true, maxAge: 7200000 });
                 res.status(200).json(findUser);
             }
             else{

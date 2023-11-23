@@ -3,8 +3,12 @@ const router = express.Router();
 const Trip = require('../models/Trip.js')
 const User_trip = require('../models/User_trip.js')
 const User = require('../models/User.js')
+const jwt = require('jsonwebtoken')
+const Auth = require('../middlewares/Auth.js')
 
-router.get('/', async (req, res) => {
+
+
+router.get('/', Auth, async (req, res) => {
     try {
       const userTrips = await Trip.findAll({
         include: [
@@ -25,7 +29,7 @@ router.get('/', async (req, res) => {
     }
   });
 
-router.get('/:id', async (req, res)=>{
+router.get('/:id', Auth, async (req, res)=>{
   
   try {
     const userTrips = await Trip.findOne({
@@ -51,7 +55,7 @@ router.get('/:id', async (req, res)=>{
 });
 
 
-router.post('/create', async (req, res)=>{
+router.post('/create', Auth, async (req, res)=>{
     const trip = req.body
     const {userId} = req.body
     try{

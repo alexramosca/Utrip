@@ -1,8 +1,11 @@
 const express = require('express');
+const cookieParser = require('cookie-parser')
 const sequelize = require('./config/config.js')
 const cors = require('cors')
 const app = express();
+app.use(cookieParser())
 app.use(express.json())
+require('dotenv').config();
 //models
 const User = require('./models/User.js')
 const Trip = require('./models/Trip.js')
