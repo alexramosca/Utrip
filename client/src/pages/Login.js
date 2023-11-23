@@ -1,6 +1,13 @@
 import axios from 'axios'
+import { useContext} from 'react';
+import { useNavigate } from "react-router-dom";
+import {UserContext} from '../App'
 import { useForm } from 'react-hook-form';
+
+
 export const Login = ()=>{
+    const navigate = useNavigate()
+    const {currentUser, setCurrentUser} = useContext(UserContext)
     const { register, handleSubmit} = useForm()
     const onSubmit = async (data, e)=>{
        e.preventDefault()
@@ -9,10 +16,11 @@ export const Login = ()=>{
             email: data.email,
             password: data.password
         })
-        console.log(response)
+        
         if(response.status === 200){
-            alert("login success")
-            window.location.href = "/"
+            console.log(response.data)
+            setCurrentUser(response.data)
+            navigate('/')
         }
 
         
