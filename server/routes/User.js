@@ -3,6 +3,7 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const router = express.Router();
+const Auth = require('../middlewares/Auth.js')
 require('dotenv').config();
 
 
@@ -91,6 +92,17 @@ router.post('/login', async(req, res) =>{
         console.log(err)
     }
 
+})
+router.post('/checkAuth', Auth , async(req, res)=>{
+
+    const authToken = req.cookies['token']
+    console.log(authToken)
+    if(authToken!= null){
+        res.status(200).json({isAuthorized: true})
+    }
+    else {
+        res.status(200).json({isAuthorized: false})
+    }
 })
 
 

@@ -12,7 +12,15 @@ const Trip = require('./models/Trip.js')
 const User_trip = require('./models/User_trip.js')
 const relationship = require('./models/Relationships.js')(User, Trip, User_trip)
 //routes
-app.use(cors())
+const corsOptions = {
+  origin: 'http://localhost:3000', 
+  credentials: true, 
+  allowedHeaders: 'Content-Type,Authorization',
+  exposedHeaders: 'Content-Range,X-Content-Range',
+  maxAge: 86400,
+};
+
+app.use(cors(corsOptions));
 app.use('/users',require('./routes/User.js'))
 app.use('/trips',require('./routes/Trip.js'))
 

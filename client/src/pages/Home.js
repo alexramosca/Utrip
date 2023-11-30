@@ -59,12 +59,14 @@ export const Home = () => {
     const {data, isLoading, error} = useQuery({
         queryKey: ['any'],
         queryFn: async ()=>{
-        const res = await Axios.get(process.env.REACT_APP_API_BASE_URL + '/trips');
+        const res = await Axios.get(process.env.REACT_APP_API_BASE_URL + '/trips', {
+            withCredentials: true
+        });
             return res.data;
     }})
 
     const fetchTrip = async (tripId)=>{
-        const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/trips/${tripId}`)
+        const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/trips/${tripId}`,{withCredentials: true})
         if(response.status === 200)
             setTripSelected(response.data)
     }
