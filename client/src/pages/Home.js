@@ -1,18 +1,25 @@
 import Axios from 'axios';
 import { useRef, useContext, useState} from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from "react-router-dom";
 import { Modal } from '../components/Modal';
 import { useForm } from 'react-hook-form';
 import { UserContext } from '../App';
+import axios from 'axios';
 
 
 
 export const Home = () => {
+    
     const [isCreateMode, setIsCreateMode] = useState(null)
     const [tripSelected, setTripSelected] = useState(null)
     const navigate = useNavigate()
-    const {currentUser} = useContext(UserContext)
+    const queryClient = useQueryClient();
+    const {currentUser, setCurrentUser} = useContext(UserContext)
+    localStorage.setItem('userId', currentUser.UserId)
+    const localId = localStorage.getItem('userId')
+    localId && setCurrentUser(localId)
+    
     const onSubmit = async (data, e) => {
         e.preventDefault()
         if(data){
@@ -22,9 +29,7 @@ export const Home = () => {
             } 
             ,
             {
-                headers: {
-                  'Content-Type': 'application/json'
-                },
+                withCredentials: true
             }
             )
             if(response.status === 200){
@@ -55,7 +60,29 @@ export const Home = () => {
         reset()
         dialogRef.current.close()
     }
+    const handleApplication = async (tripId)=>{
+        
+        let response = await Axios.post(process.env.REACT_APP_API_BASE_URL + '/users/apply',{
+            tripId : tripId,
+            userId : currentUser.UserId
+        })
+        if(response.status === 201){
+            alert("You have been added successfuly to the trip")
+            queryClient.invalidateQueries('any');
+           
+        }
+        else {
+            alert("something went Wrong, please try again")
+        }
+    }
+    const logOut = async()=>{
+        //change to POST in production
+        let response = await Axios.get(process.env.REACT_APP_API_BASE_URL + '/users/logout', 
+        {withCredentials: true})
+        navigate('/login')
+    }
     
+    //Main query
     const {data, isLoading, error} = useQuery({
         queryKey: ['any'],
         queryFn: async ()=>{
@@ -78,6 +105,7 @@ export const Home = () => {
     <>
     
     <button onClick={()=>{handleOpen(true)}} >Create Trip</button>
+    <button onClick={logOut}>Logout</button>
     <Modal ref={dialogRef} >
 
     <h1>{isCreateMode?'Create ':'View '}trip</h1>
@@ -88,10 +116,10 @@ export const Home = () => {
       
     </>
   )}
-  Origin: <input {...register('from')} type='text' value={isCreateMode ? '' : tripSelected?.from || ''} readOnly={!isCreateMode} /> <br />
-  Destination: <input {...register('destiny')} type='text' value={isCreateMode ? '' : tripSelected?.destiny || ''} readOnly={!isCreateMode} /> <br />
-  Date: <input {...register('date')} type='date' value={isCreateMode ? '' : tripSelected?.date || ''} readOnly={!isCreateMode} /> <br />
-  Passengers Number: <input {...register('passagerLimit')} value={isCreateMode ? '' : tripSelected?.passagerLimit || ''} type='number' min={1} max={7} readOnly={!isCreateMode} />
+  Origin: <input {...register('from')} type='text' defaultValue={isCreateMode ? '' : tripSelected?.from || ''} readOnly={!isCreateMode} /> <br />
+  Destination: <input {...register('destiny')} type='text' defaultValue={isCreateMode ? '' : tripSelected?.destiny || ''} readOnly={!isCreateMode} /> <br />
+  Date: <input {...register('date')} type='date' defaultValue={isCreateMode ? '' : tripSelected?.date || ''} readOnly={!isCreateMode} /> <br />
+  Passengers Number: <input {...register('passagerLimit')} defaultValue={isCreateMode ? '' : tripSelected?.passagerLimit || ''} type='number' min={1} max={7} readOnly={!isCreateMode} />
   <input type='submit' value={isCreateMode ? 'Share' : 'Apply'} />
   <button onClick={handleClose}>Cancel</button>
 </form>
@@ -109,6 +137,9 @@ export const Home = () => {
                             </p>
                 })}
             </div>
+            <button onClick={(e) => { e.stopPropagation(); handleApplication(trip.TripId) }}>Apply</button>
+
+
         </div>
     })}
     </>

@@ -54,10 +54,16 @@ router.get('/:id', Auth, async (req, res)=>{
   }
 });
 
+router.get('/test', Auth, async (req, res)=>{
+  console.log(req.cookies.token)
+  res.status(201).json("hi")
+})
 
 router.post('/create', Auth, async (req, res)=>{
+ 
     const trip = req.body
     const {userId} = req.body
+    
     try{
         const createTrip = await Trip.create(trip)
         if(createTrip){
@@ -79,4 +85,5 @@ router.post('/create', Auth, async (req, res)=>{
         res.status(500).json({error: "internal error"})
     }
 })
+
 module.exports = router

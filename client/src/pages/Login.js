@@ -9,10 +9,11 @@ export const Login = ()=>{
     const navigate = useNavigate()
     const [isAuth, setIsAuth] = useState( async ()=>{
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/trips`, {withCredentials: true})
-        if(response.status == 200){
+        if(response.status === 200){
             setIsAuth(true)
+            
         }
-        if(response.status == 204){
+        if(response.status === 204){
             setIsAuth(false)
         }
     });
@@ -38,6 +39,8 @@ export const Login = ()=>{
             
             setCurrentUser(response.data)
             setIsAuth(true)
+        
+
         }
 
         

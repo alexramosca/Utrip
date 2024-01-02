@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require('../models/User')
+const User_trip = require('../models/User_trip.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const router = express.Router();
@@ -22,11 +23,6 @@ router.get('/', async (req, res)=>{
         res.status(500).json({error: "Internal error"})
     }
 })
-
-router.get('/:id', (req, res)=>{
-    res.send(`this is user ${req.params.id}`)
-})
-
 router.post('/register', async(req, res) =>{
     const user = req.body
    
@@ -61,7 +57,6 @@ router.post('/checkEmail', async (req, res)=>{
     
 
 })
-
 
 router.post('/login', async(req, res) =>{
     let {email, password}= req.body;
@@ -104,6 +99,41 @@ router.post('/checkAuth', Auth , async(req, res)=>{
         res.status(200).json({isAuthorized: false})
     }
 })
+//change to post in production
+router.get('/logout', async (req, res) => {
+    console.log(req.cookies.token)
+    try {
+      res.status(200).clearCookie('token', { path: '/' }).json({msg: 'Logged out successfully'});
+    } catch (error) {
+      console.error('Error clearing cookie:', error);
+      res.status(500).json('Error clearing cookie');
+    }
+  });
+  
+  router.post('/apply', async (req, res)=>{
+    let userId= req.body.userId;
+    let tripId = req.body.tripId;
+    console.log(req.body)
+    try {
+        let createApplication = await User_trip.create({
+            isDriver: 0,
+            UserId: userId,
+            TripId: tripId
+        })
+        if(createApplication){
+            res.status(201).json({data: createApplication , msg: "Successful Application"})
+        }
+        else {
+            res.status(401).json("bad request")
+        }
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json("Server Internal Error")
+    }
+    
+
+  })
 
 
 module.exports = router
