@@ -15,10 +15,9 @@ export const Home = () => {
     const [tripSelected, setTripSelected] = useState(null)
     const navigate = useNavigate()
     const queryClient = useQueryClient();
-    const {currentUser, setCurrentUser} = useContext(UserContext)
-    localStorage.setItem('userId', currentUser.UserId)
-    const localId = localStorage.getItem('userId')
-    localId && setCurrentUser(localId)
+    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const localUser = JSON.parse(localStorage.getItem('user'))
+    !currentUser && localUser && setCurrentUser(localUser)
     
     const onSubmit = async (data, e) => {
         e.preventDefault()
@@ -100,7 +99,7 @@ export const Home = () => {
 
     if(isLoading) return <h3>Loading...</h3>
     if(error) return <h3>Data not Found</h3>
-    console.log(currentUser)
+    
   return (
     <>
     

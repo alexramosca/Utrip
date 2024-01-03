@@ -38,6 +38,7 @@ export const Login = ()=>{
         if(response.status === 200){
             
             setCurrentUser(response.data)
+            localStorage.setItem('user', JSON.stringify(response.data))
             setIsAuth(true)
         
 
