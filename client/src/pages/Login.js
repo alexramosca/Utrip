@@ -3,6 +3,10 @@ import { useContext, useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import {UserContext} from '../App'
 import { useForm } from 'react-hook-form';
+import { Nav } from '../components/Nav';
+import './login.css'
+import './landing.css'
+import { Footer } from '../components/Footer';
 
 
 export const Login = ()=>{
@@ -21,7 +25,7 @@ export const Login = ()=>{
 
     useEffect(()=>{
         if(isAuth === true){
-            navigate('/')
+            navigate('/home')
             
         }
     },[isAuth])
@@ -54,17 +58,26 @@ export const Login = ()=>{
     
     if(!isAuth){
         return(
-            <>        
-            <h1>Login Page</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label>Email:</label>
-                <input type="email" {...register('email')}/>
+            <>  
+            <Nav />      
+           <div className='loginFormWrapper'>
+            <div className='loginBoxWrapper'>
+             <div className='imgLoginWrapper'>
+            <img src='./images/landscape.webp' />
+             </div>
+             <form onSubmit={handleSubmit(onSubmit)}>
+            
+            <h1>Sign In</h1>
+                <input placeholder='Email' className='textBox' type="email" {...register('email')}/>
                 <br/><br/>
-                <label>Password:</label>
-                <input type="password" {...register('password')} />
+                <input placeholder='Password' className='textBox' type="password" {...register('password')} />
                 <br/><br/>
-                <input type="submit" value="Login" />
+                <input type="submit" value="Sign In" /> 
             </form>
+            </div>
+            
+            </div>
+            <Footer />
             </>
         )
     }

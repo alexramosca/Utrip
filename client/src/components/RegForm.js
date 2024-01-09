@@ -73,7 +73,7 @@ export const RegForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form id="regForm" onSubmit={handleSubmit(onSubmit)}>
      <input {...register('firstName')} type="text" placeholder="First Name" required /><br />
       <span className="formErrorMsgs">{errors.firstName?.message}</span>
 
@@ -99,14 +99,26 @@ export const RegForm = () => {
 
       <input {...register('postalCode')} type="text" placeholder="Postal Code" required /><br />
       <span className="formErrorMsgs">{errors.postalCode?.message}</span>
-
+      
       <input {...register('city')} type="text" placeholder="City" required /><br />
       <span className="formErrorMsgs">{errors.city?.message}</span>
 
       <select {...register('province')} required>
-        <option value="AB">Alberta</option>
-      </select><br />
-      
+  <option value="AB">Alberta</option>
+  <option value="BC">British Columbia</option>
+  <option value="MB">Manitoba</option>
+  <option value="NB">New Brunswick</option>
+  <option value="NL">Newfoundland and Labrador</option>
+  <option value="NS">Nova Scotia</option>
+  <option value="NT">Northwest Territories</option>
+  <option value="NU">Nunavut</option>
+  <option value="ON">Ontario</option>
+  <option value="PE">Prince Edward Island</option>
+  <option value="QC">Quebec</option>
+  <option value="SK">Saskatchewan</option>
+  <option value="YT">Yukon</option>
+</select><br />
+   
       <input {...register('country')} type="text" placeholder="Country" required /><br />
       <span className="formErrorMsgs">{errors.country?.message}</span>
 

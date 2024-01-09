@@ -1,10 +1,15 @@
 
 import { RegForm } from "../components/RegForm"
+import "./register.css"
+import { Footer } from "../components/Footer"
+import { Nav } from "../components/Nav"
 export const Register = ()=>{
     return(
-        <> 
-        <h1>Register page</h1>
+        <>
+        <Nav />
+        <h1>Sign Up</h1>
         <RegForm />
+        <Footer />
         </>
         
     )
