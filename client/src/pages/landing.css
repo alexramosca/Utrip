@@ -16,13 +16,11 @@
 
 }
 
-nav{
+nav:not(.painelNav){
     padding: 1% 5%;
     display: flex;
     width: 100vw;
     justify-content: space-between;
-    
-    
 }
 .navWrapper{
     display: none;
@@ -71,7 +69,7 @@ nav{
     
 }
 #hambMenu{
-    width: clamp(40px,8vw, 68px);
+    width: clamp(30px,8vw, 40px);
     z-index: 999;
     transition: all 0.5s ease-out;
     &:hover {
@@ -81,6 +79,10 @@ nav{
 .rotate90{
     transform: rotate(90deg);
     filter: invert(100%);
+}
+.unrotate90{
+    transform: rotate(-90deg);
+
 }
 
 .mobileMenuWrapper{
@@ -369,11 +371,7 @@ article h2 {
 
 
 
-@media screen and (min-width: 600px) {
-    .footer{
-        
-    }
-  }
+
 
   @media screen and (min-width: 1024px) {
     .navWrapper{

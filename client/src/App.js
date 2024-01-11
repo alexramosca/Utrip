@@ -8,6 +8,8 @@ import { useState, createContext } from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import { NotFound } from './components/NotFound';
+import { Explore } from './pages/Explore';
+import { Test } from './pages/Test';
 
 export const UserContext = createContext()
 function App() {
@@ -21,11 +23,15 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="*" element={<NotFound />} />
+        
         <Route path="/register" element={<Register />}/>
         <Route path="/login" element={<Login />}/>
-        <Route path="/home" element={<Home />}/>
-        
+        <Route path="/home" element={<Home />}>
+            <Route index element={<Explore />}/>
+            
+        </Route>
+        <Route path="*" element={<NotFound />} />
+  
       </Routes>
       
     </Router>

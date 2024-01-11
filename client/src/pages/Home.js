@@ -1,148 +1,71 @@
-import Axios from 'axios';
-import { useRef, useContext, useState} from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from "react-router-dom";
-import { Modal } from '../components/Modal';
-import { useForm } from 'react-hook-form';
-import { UserContext } from '../App';
-
-
+import { Outlet } from "react-router-dom"
+import {useState, useEffect} from 'react'
+import { SearchBar } from "../components/SearchBar"
+import { Menu } from "../components/Menu"
+import { BtnLogout } from "../components/BtnLogout"
+import './home.css'
+import useGetFetch from "../hooks/useGetFetch"
+import axios from "axios"
 
 
 export const Home = () => {
-    
-    const [isCreateMode, setIsCreateMode] = useState(null)
-    const [tripSelected, setTripSelected] = useState(null)
-    const navigate = useNavigate()
-    const queryClient = useQueryClient();
-    const { currentUser, setCurrentUser } = useContext(UserContext);
-    const localUser = JSON.parse(localStorage.getItem('user'))
-    !currentUser && localUser && setCurrentUser(localUser)
-    
-    const onSubmit = async (data, e) => {
-        e.preventDefault()
-        if(data){
-            const response =  await Axios.post(`${process.env.REACT_APP_API_BASE_URL}/trips/create`,{
-                userId: currentUser.UserId,
-                ...data
-            } 
-            ,
-            {
-                withCredentials: true
-            }
-            )
-            if(response.status === 200){
-                handleClose(e)
-                reset()
-                navigate('/')
-            }
-        }
+    const [isOpen, setIsOpen] = useState(false)
+    const handleMenu = ()=>{
+        setIsOpen(!isOpen)
+    }
+    const navMenuItems = [
+        { name: 'Explore', path: '/explore' },
+        { name: 'Profile', path: '/profile' },
+        { name: 'Settings', path: '/settings' },
         
-    }
-    const { register, handleSubmit, reset} = useForm();
-    
-    const dialogRef = useRef(null)
-    const handleOpen = (mode, tripId)=>{
-        setIsCreateMode(mode)
-        if(!mode){
-            fetchTrip(tripId).then(()=>{
-                dialogRef.current.showModal()
-            })
-        }
-        else
-            dialogRef.current.showModal()
+      ];
+      useEffect(() => {
+        const body = document.querySelector('body');
         
-    }
-    const handleClose = (e)=>{
-        setIsCreateMode(null)
-        e.preventDefault()
-        reset()
-        dialogRef.current.close()
-    }
-    const handleApplication = async (tripId)=>{
-        
-        let response = await Axios.post(process.env.REACT_APP_API_BASE_URL + '/users/apply',{
-            tripId : tripId,
-            userId : currentUser.UserId
-        })
-        if(response.status === 201){
-            alert("You have been added successfuly to the trip")
-            queryClient.invalidateQueries('any');
-           
+        if (isOpen) {
+          body.classList.add('lock');
+        } else {
+          body.classList.remove('lock');
         }
-        else {
-            alert("something went Wrong, please try again")
-        }
-    }
-    const logOut = async()=>{
-        //change to POST in production
-        let response = await Axios.get(process.env.REACT_APP_API_BASE_URL + '/users/logout', 
-        {withCredentials: true})
-        navigate('/login')
-    }
     
-    //Main query
-    const {data, isLoading, error} = useQuery({
-        queryKey: ['any'],
-        queryFn: async ()=>{
-        const res = await Axios.get(process.env.REACT_APP_API_BASE_URL + '/trips', {
-            withCredentials: true
-        });
-            return res.data;
-    }})
-
-    const fetchTrip = async (tripId)=>{
-        const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/trips/${tripId}`,{withCredentials: true})
-        if(response.status === 200)
-            setTripSelected(response.data)
-    }
-
-    if(isLoading) return <h3>Loading...</h3>
-    if(error) return <h3>Data not Found</h3>
-    
-  return (
-    <>
-    
-    <button onClick={()=>{handleOpen(true)}} >Create Trip</button>
-    <button onClick={logOut}>Logout</button>
-    <Modal ref={dialogRef} >
-
-    <h1>{isCreateMode?'Create ':'View '}trip</h1>
-    <form onSubmit={handleSubmit(onSubmit)}>
-  {!isCreateMode && (
-    <>
-      Trip Id: <input disabled value={tripSelected?.TripId || ''} />
+        return () => {
+          body.classList.remove('lock');
+        };
+      }, [isOpen]);
       
-    </>
-  )}
-  Origin: <input {...register('from')} type='text' defaultValue={isCreateMode ? '' : tripSelected?.from || ''} readOnly={!isCreateMode} /> <br />
-  Destination: <input {...register('destiny')} type='text' defaultValue={isCreateMode ? '' : tripSelected?.destiny || ''} readOnly={!isCreateMode} /> <br />
-  Date: <input {...register('date')} type='date' defaultValue={isCreateMode ? '' : tripSelected?.date || ''} readOnly={!isCreateMode} /> <br />
-  Passengers Number: <input {...register('passagerLimit')} defaultValue={isCreateMode ? '' : tripSelected?.passagerLimit || ''} type='number' min={1} max={7} readOnly={!isCreateMode} />
-  <input type='submit' value={isCreateMode ? 'Share' : 'Apply'} />
-  <button onClick={handleClose}>Cancel</button>
-</form>
-        
-    </Modal>
-    {data.map((trip)=>{
-        return <div onClick={()=>{handleOpen(false, trip.TripId)}} className='App' key={trip.TripId}>
-            <h1>{trip.from}</h1>
-            <h1>{trip.destiny}</h1>
-            <h2>{trip.date}</h2>
-            <div>
-                {trip.Users.map((user)=>{
-                    return <p className={user.User_trip.isDriver?"green":"red"}
-                            key={user.UserId}>{user.firstName}
-                            </p>
-                })}
-            </div>
-            <button onClick={(e) => { e.stopPropagation(); handleApplication(trip.TripId) }}>Apply</button>
-
-
+    return(
+        <>
+        <nav className="painelNav">
+          <div>
+        <img id="navLogo" src='./icons/logo.png' />
         </div>
-    })}
-    </>
-  )
-  
+          <SearchBar />
+            <img 
+            className={isOpen ? 'rotate90' : undefined} 
+            onClick={handleMenu}
+            id='hambMenu' src='./icons/menu.svg' />
+
+            <div className="navWrapper">
+              <ul>
+                <Menu menu = {navMenuItems} />
+                <BtnLogout />
+              </ul>          
+            </div>
+            <div className={isOpen?"mobileMenu opacity100":"mobileMenu opacity0"} >
+              <ul>
+                <Menu menu = {navMenuItems} />
+                <BtnLogout />
+                </ul>
+
+            </div>
+           
+            
+           
+            
+        </nav>
+        <Outlet />
+        </>
+    )
+   
 }
 

@@ -11,7 +11,7 @@ import { Footer } from '../components/Footer'
 
 export const Landing = () =>{
     
-    //This obj is used to "feed" the becomeCards components
+    
     
     return (
         <>
@@ -36,10 +36,6 @@ export const Landing = () =>{
                 src="./icons/geo.svg"
                 title="Long Distances"
                 text="Post or book a ride everywhere in Canada. Anytime you need" />
-            <LandingCard
-            src="./icons/credit-card.svg" 
-            title="Online Payment" 
-            text="Book and pay your seat online for long distance rides. We facilitate for you" />
             </div>
             <div className='actionDiv'>
                 <h2>Come aboard with thousands of members</h2>

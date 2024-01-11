@@ -8,7 +8,7 @@ const Auth = async (req, res, next) => {
         next()
       } catch (error) {
       
-        res.status(204).json({ error: 'No content' });
+        res.status(204).json("unauthorized");
       }
         }
       

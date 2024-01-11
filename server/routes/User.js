@@ -88,7 +88,8 @@ router.post('/login', async(req, res) =>{
     }
 
 })
-router.post('/checkAuth', Auth , async(req, res)=>{
+//change to post in production
+router.get('/checkAuth', Auth , async(req, res)=>{
 
     const authToken = req.cookies['token']
     console.log(authToken)
@@ -96,12 +97,11 @@ router.post('/checkAuth', Auth , async(req, res)=>{
         res.status(200).json({isAuthorized: true})
     }
     else {
-        res.status(200).json({isAuthorized: false})
+        res.status(401).json({isAuthorized: false})
     }
 })
 //change to post in production
 router.get('/logout', async (req, res) => {
-    console.log(req.cookies.token)
     try {
       res.status(200).clearCookie('token', { path: '/' }).json({msg: 'Logged out successfully'});
     } catch (error) {

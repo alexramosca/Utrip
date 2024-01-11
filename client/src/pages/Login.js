@@ -12,14 +12,13 @@ import { Footer } from '../components/Footer';
 export const Login = ()=>{
     const navigate = useNavigate()
     const [isAuth, setIsAuth] = useState( async ()=>{
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/trips`, {withCredentials: true})
+
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/checkAuth`, {withCredentials: true})
         if(response.status === 200){
             setIsAuth(true)
             
         }
-        if(response.status === 204){
-            setIsAuth(false)
-        }
+        
     });
     
 
