@@ -4,8 +4,7 @@ import { SearchBar } from "../components/SearchBar"
 import { Menu } from "../components/Menu"
 import { BtnLogout } from "../components/BtnLogout"
 import './home.css'
-import useGetFetch from "../hooks/useGetFetch"
-import axios from "axios"
+
 
 
 export const Home = () => {
@@ -14,7 +13,8 @@ export const Home = () => {
         setIsOpen(!isOpen)
     }
     const navMenuItems = [
-        { name: 'Explore', path: '/explore' },
+        { name: 'Explore', path: '/home' },
+        {name: 'Create', path: '/home/create'},
         { name: 'Profile', path: '/profile' },
         { name: 'Settings', path: '/settings' },
         
@@ -40,11 +40,12 @@ export const Home = () => {
         <img id="navLogo" src='./icons/logo.png' />
         </div>
           <SearchBar />
+         
             <img 
             className={isOpen ? 'rotate90' : undefined} 
             onClick={handleMenu}
             id='hambMenu' src='./icons/menu.svg' />
-
+            
             <div className="navWrapper">
               <ul>
                 <Menu menu = {navMenuItems} />
@@ -52,7 +53,7 @@ export const Home = () => {
               </ul>          
             </div>
             <div className={isOpen?"mobileMenu opacity100":"mobileMenu opacity0"} >
-              <ul>
+              <ul id="ulMenu">
                 <Menu menu = {navMenuItems} />
                 <BtnLogout />
                 </ul>

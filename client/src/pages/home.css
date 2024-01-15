@@ -22,9 +22,12 @@
     padding: 2% 4%;
     background-color: black;
     width: 100vw;
-    &>img{
-        filter: invert(100%);
-    }
+    
+        &>img{
+            filter: invert(100%);
+        }
+    
+    
     &>*{
         width: 33%;
     }
@@ -91,16 +94,18 @@ button{
     }
 }
 
-@media screen and (width > 724) {
+@media screen and (min-width: 1024px) {
     .mobileMenu{
         display: none;
         &>ul{
             display: none;
             z-index: 1;
+            
         }
     }
-    ul{
+    #ulMenu{
         display: none;
         pointer-events: none;
+        background-color: red;
     }
 }

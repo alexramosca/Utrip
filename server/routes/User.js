@@ -66,12 +66,13 @@ router.post('/login', async(req, res) =>{
     try{
         const findUser = await User.findOne({where: {email: email}})
         if(findUser){
+           
             
             // compare passwords
             const validPassword =  bcrypt.compareSync(password, findUser.dataValues.password);
             if(validPassword){
-                const token = jwt.sign({user: findUser}, key, {expiresIn: '2h'})
-                res.cookie('token', token, { httpOnly: true, maxAge: 7200000 });
+                const token = jwt.sign({user: findUser.dataValues.UserId}, key, {expiresIn: '2h'})
+                res.cookie('token', token, { httpOnly: true, sameSite: "None", secure: true, maxAge: 7200000});
                 res.status(200).json(findUser);
             }
             else{

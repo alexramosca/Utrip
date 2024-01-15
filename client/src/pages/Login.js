@@ -1,34 +1,45 @@
 import axios from 'axios'
-import { useContext, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
-import {UserContext} from '../App'
 import { useForm } from 'react-hook-form';
 import { Nav } from '../components/Nav';
 import './login.css'
 import './landing.css'
 import { Footer } from '../components/Footer';
+import { Spinning } from '../components/Spinning';
 
 
 export const Login = ()=>{
     const navigate = useNavigate()
-    const [isAuth, setIsAuth] = useState( async ()=>{
-
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/checkAuth`, {withCredentials: true})
-        if(response.status === 200){
-            setIsAuth(true)
+    const [isAuth, setIsAuth] = useState('loading')
+    useEffect( ()=>{
+        const fetchAuth = async ()=>{
+            try{
+                const response = await axios.get(process.env.REACT_APP_API_BASE_URL + '/users/checkAuth',{
+                    withCredentials: true
+                })
+                if(response.status === 200){
+                    setIsAuth(true)
+                }
+                
+            }
+            catch{
+                
+                    setIsAuth(false)
+                
+            }
             
-        }
-        
-    });
     
-
+        }
+        fetchAuth()
+    
+    }, [])
     useEffect(()=>{
         if(isAuth === true){
             navigate('/home')
             
         }
-    },[isAuth])
-    const {currentUser, setCurrentUser} = useContext(UserContext)
+    },[isAuth, navigate])
     const { register, handleSubmit} = useForm()
     const onSubmit = async (data, e)=>{
        e.preventDefault()
@@ -39,21 +50,16 @@ export const Login = ()=>{
         },{withCredentials: true})
         
         if(response.status === 200){
-            
-            setCurrentUser(response.data)
-            localStorage.setItem('user', JSON.stringify(response.data))
             setIsAuth(true)
-        
-
         }
-
-        
        }
        catch(err){
         console.log(err)
        }
     }
 
+    if(isAuth === 'loading')
+        return (<Spinning />)
     
     if(!isAuth){
         return(

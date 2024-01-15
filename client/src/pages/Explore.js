@@ -1,10 +1,11 @@
-
-import { useEffect, useState } from "react";
 import { Trip } from "../components/Trip";
 import useGetFetch from "../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
+import { Spinning } from "../components/Spinning";
+import { useState, useEffect } from "react";
 
 export const Explore = () => {
+  const [isAuth, setIsAuth] = useState('loading')
   const trips = useGetFetch('/trips');
   const navigate = useNavigate()
   
@@ -13,14 +14,14 @@ export const Explore = () => {
       return (
         <div>
           {trips.data && trips.isLoading ? (
-            <h1>Loading...</h1>
+            <Spinning />
           ) : trips.error ? (
-            <h1>Something went wrong</h1>
+            navigate('/login')
           ) : (
             <>
               {trips && trips?.data?.data?.map((item, index) => {
                 return (
-                  <Trip trip={item} />
+                  <Trip key={index} trip={item} />
                 );
               })}
             </>
@@ -28,7 +29,7 @@ export const Explore = () => {
         </div>
       );
     }
-    catch(err){
+    catch{
       navigate('/login')
     }
   }

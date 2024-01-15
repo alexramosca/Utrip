@@ -10,6 +10,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import { NotFound } from './components/NotFound';
 import { Explore } from './pages/Explore';
 import { Test } from './pages/Test';
+import { Create } from './pages/Create';
 
 export const UserContext = createContext()
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/login" element={<Login />}/>
         <Route path="/home" element={<Home />}>
             <Route index element={<Explore />}/>
+            <Route path='create' element={<Create />} />
             
         </Route>
         <Route path="*" element={<NotFound />} />

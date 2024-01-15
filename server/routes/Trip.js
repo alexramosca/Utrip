@@ -62,8 +62,7 @@ router.get('/test', Auth, async (req, res)=>{
 router.post('/create', Auth, async (req, res)=>{
  
     const trip = req.body
-    const {userId} = req.body
-    
+    const userId = req.userId
     try{
         const createTrip = await Trip.create(trip)
         if(createTrip){
