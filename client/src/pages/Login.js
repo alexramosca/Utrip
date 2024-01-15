@@ -40,14 +40,26 @@ export const Login = ()=>{
             
         }
     },[isAuth, navigate])
-    const { register, handleSubmit} = useForm()
-    const onSubmit = async (data, e)=>{
-       e.preventDefault()
-       try{
-        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/login`, {
+       const { register, handleSubmit} = useForm()
+       const onSubmit = async (data, e)=>{
+         e.preventDefault()
+        try{
+            const url = `${process.env.REACT_APP_API_BASE_URL}/users/login`;
+            const body = JSON.stringify({
             email: data.email,
             password: data.password,
-        },{withCredentials: true})
+            });
+
+            const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: body,
+            credentials: 'include', // This is equivalent to axios withCredentials: true
+            };
+            const response = await fetch(url, options);
+            const responseData = await response.json();
         
         if(response.status === 200){
             setIsAuth(true)
