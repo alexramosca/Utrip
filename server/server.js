@@ -24,7 +24,7 @@ const User_trip = require('./models/User_trip.js')
 const relationship = require('./models/Relationships.js')(User, Trip, User_trip)
 //routes
 const corsOptions = {
-  origin: 'https://utrip-front.vercel.app', 
+  origin: ['https://localhost:3000', 'https://utrip-front.vercel.app'], 
   credentials: true, 
   allowedHeaders: 'Content-Type,Authorization',
   exposedHeaders: 'Content-Range,X-Content-Range',
