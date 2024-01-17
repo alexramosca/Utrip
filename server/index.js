@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser')
+const path = require('path')
 const sequelize = require('./config/config.js')
 const https = require('https');
 const fs = require('fs');
@@ -24,17 +25,23 @@ const User_trip = require('./models/User_trip.js')
 const relationship = require('./models/Relationships.js')(User, Trip, User_trip)
 //routes
 const corsOptions = {
-  origin: ['https://localhost:3000', 'https://utrip-front.vercel.app'], 
-  credentials: true, 
+  origin: ['http://react-app.local'],  // Remove the trailing slash
+  credentials: true,
   allowedHeaders: 'Content-Type,Authorization',
   exposedHeaders: 'Content-Range,X-Content-Range',
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',  // Use an array instead of a string
   maxAge: 86400,
 };
+
 
 app.use(cors(corsOptions));
 app.use('/api/users',require('./routes/User.js'))
 app.use('/api/trips',require('./routes/Trip.js'))
+
+app.use(express.static(path.join('public')));
+app.use((req,res) => {
+   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 
 sequelize.sync({alter: true}).then(()=>{
   httpsServer.listen(process.env.PORT || 3001, ()=>{

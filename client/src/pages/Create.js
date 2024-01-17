@@ -5,9 +5,10 @@ export const Create = ()=>{
     const onSubmit = async (data, e)=>{
         e.preventDefault()
         try{
-            const response = await axios.post(process.env.REACT_APP_API_BASE_URL + '/trips/create',{
-                withCredentials: true
-            },{data})
+            const response = await axios.post(process.env.REACT_APP_API_BASE_URL + '/trips/create',
+            {data},
+            {withCredentials: true}
+            ,)
             if(response.status === 200){
                 alert('Trip created successfully!');
                 reset()
