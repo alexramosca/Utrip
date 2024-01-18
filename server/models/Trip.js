@@ -10,15 +10,31 @@ const Trip = sequelize.define('Trip', {
         primaryKey: true,
         autoIncrement: true
     },
-    from: {
+    add_departure:{
+        type:DataTypes.STRING,
+        allowNull: false
+    },
+    city_departure: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    destiny: {
+    prov_departure:{
+        type :DataTypes.STRING(2),
+        allowNull: false
+    },
+    add_arrival:{
+        type:DataTypes.STRING,
+        allowNull: false
+    },
+    city_arrival: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    passagerLimit: {
+    prov_arrival:{
+        type :DataTypes.STRING(2),
+        allowNull: false    
+    },
+    seats_available: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },

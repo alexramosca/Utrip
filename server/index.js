@@ -25,11 +25,11 @@ const User_trip = require('./models/User_trip.js')
 const relationship = require('./models/Relationships.js')(User, Trip, User_trip)
 //routes
 const corsOptions = {
-  origin: ['http://react-app.local'],  // Remove the trailing slash
+  origin: ['http://localhost:3000'],  
   credentials: true,
   allowedHeaders: 'Content-Type,Authorization',
   exposedHeaders: 'Content-Range,X-Content-Range',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',  // Use an array instead of a string
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',  
   maxAge: 86400,
 };
 
@@ -44,7 +44,7 @@ app.use((req,res) => {
 });
 
 sequelize.sync({alter: true}).then(()=>{
-  httpsServer.listen(process.env.PORT || 3001, ()=>{
+  app.listen(process.env.PORT || 3001, ()=>{
         console.log("server running")
     })
 })

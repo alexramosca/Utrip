@@ -3,6 +3,7 @@ import useGetFetch from "../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
 import { Spinning } from "../components/Spinning";
 import { useState, useEffect } from "react";
+import './home.css';
 
 export const Explore = () => {
   const [isAuth, setIsAuth] = useState('loading')
@@ -18,13 +19,15 @@ export const Explore = () => {
           ) : trips.error ? (
             navigate('/login')
           ) : (
-            <>
+            <div className="tripsPageWrapper">
               {trips && trips?.data?.data?.map((item, index) => {
                 return (
+                 
                   <Trip key={index} trip={item} />
+                 
                 );
               })}
-            </>
+            </div>
           )}
         </div>
       );

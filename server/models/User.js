@@ -53,6 +53,11 @@ const User = sequelize.define('User', {
     country: {
         type: DataTypes.STRING(30),
         allowNull: false
+    },
+    profilePicture: {
+        type: DataTypes.STRING(99),
+        allowNull: false,
+        defaultValue: 'default.png'
     }
 },{
     timestamps: false,

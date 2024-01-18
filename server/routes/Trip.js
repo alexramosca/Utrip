@@ -65,12 +65,7 @@ router.post('/create', Auth, async (req, res)=>{
     console.log(trip)
     const userId = req.userId
     try{
-        const createTrip = await Trip.create({
-          from: trip.from,
-          destiny: trip.destination,
-          passagerLimit: trip.availableSeats,
-          date: trip.date
-        })
+        const createTrip = await Trip.create(trip)
         if(createTrip){
             const insertJoinTable = await User_trip.create({
                 isDriver: true,
