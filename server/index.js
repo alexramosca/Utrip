@@ -22,7 +22,8 @@ require('dotenv').config();
 const User = require('./models/User.js')
 const Trip = require('./models/Trip.js')
 const User_trip = require('./models/User_trip.js')
-const relationship = require('./models/Relationships.js')(User, Trip, User_trip)
+const Applications = require('./models/Applications.js')
+const relationship = require('./models/Relationships.js')(User, Trip, User_trip, Applications)
 //routes
 const corsOptions = {
   origin: ['http://localhost:3000'],  
