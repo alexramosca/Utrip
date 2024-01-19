@@ -149,6 +149,10 @@ datalist{
     padding: 1rem;
 }
 
+.errMsg{
+    font-size: 8pt;
+    color: red;
+}
 
 @media screen and (min-width: 1024px) {
     .mobileMenu{

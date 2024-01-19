@@ -33,13 +33,13 @@ export const Login = ()=>{
         }
         fetchAuth()
     
-    }, [])
+    }, [])*/
     useEffect(()=>{
         if(isAuth === true){
             navigate('/home')
             
         }
-    },[isAuth, navigate])*/
+    },[isAuth, navigate])
        const { register, handleSubmit} = useForm()
        const onSubmit = async (data, e)=>{
          e.preventDefault()

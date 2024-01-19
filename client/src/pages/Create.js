@@ -36,20 +36,22 @@ export const Create = ()=>{
     const [destProvInput, setDestProvInput] = useState('')
     const [cities, setCities] = useState(null)
     const [destAddress, setDestAddress] = useState(null)
+    const [isRightFrom, setIsRightFrom] = useState('nothing')
+    const [isRightDest, setIsRightDest] = useState('nothing')
    
     const handleFromInput = (e, set)=>{
         set(e.target.value);
     }
-    const handleBlur = async (e)=>{
+    const handleBlur = async (e, setFunction)=>{
         const input = e.target.value
         if(input.length > 2){
             const url = `http://api.positionstack.com/v1/forward?access_key=9cec2106fdf303b9e82a25feb084b836&country=ca&query=${input}`
         const addressList = await fetchAddress(url)
 
         if (addressList.data.some((address) => address.label === input)) {
-        alert('exist');
+            setFunction(true)
         } else {
-        alert('not found');
+            setFunction(false)
         }
         }
         
@@ -81,7 +83,6 @@ export const Create = ()=>{
         
       }
     
-    
     useEffect(() => {
         if(destProvInput.trim === '') return
         const fetchCitiesTimeout = setTimeout(()=>filterAddress(fromProvInput, setCities), 1000)
@@ -106,17 +107,19 @@ export const Create = ()=>{
         type="text"
         id="add_departure"
         onChange={(e)=>{handleFromInput(e, setFromProvInput)}}
-        onBlur={(e)=>{handleBlur(e)}}
+        onBlur={(e)=>{handleBlur(e, setIsRightFrom)}}
         placeholder="departure address ex: 123 main street, city, province, Canada" 
         list="fromProvList"/>
         <AddressDataList id="fromProvList" addresses={cities} />
+        {isRightFrom?'':<span className="errMsg">address not found</span>}
       <input {...register('add_arrival')} type="text"
       onChange={(e)=>handleFromInput(e, setDestProvInput)}
-      onBlur={(e)=>{handleBlur(e)}}
+      onBlur={(e)=>{handleBlur(e, setIsRightDest)}}
       placeholder="Arrival address ex. 127 street name, city, PR, Canada"
       required
       list="destProvList"
       />
+      {isRightDest?'':<span className="errMsg">address not found</span>}
        <AddressDataList id="destProvList" addresses={destAddress} />
       
       <input {...register('seats_available')} type="number" min={1} max={7} placeholder="Available seats"  required/>
