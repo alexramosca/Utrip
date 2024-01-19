@@ -12,13 +12,13 @@ import { Spinning } from '../components/Spinning';
 export const Login = ()=>{
     const navigate = useNavigate()
     const [isAuth, setIsAuth] = useState('loading')
-    useEffect( ()=>{
+    /*useEffect( ()=>{
         const fetchAuth = async ()=>{
             try{
-                const response = await axios.get(process.env.REACT_APP_API_BASE_URL + '/users/checkAuth',{
-                    withCredentials: true
+                const response = await fetch(process.env.REACT_APP_API_BASE_URL + '/users/checkAuth',{
+                   credentials: "include"
                 })
-                if(response.status === 200){
+                if(response.ok){
                     setIsAuth(true)
                 }
                 
@@ -39,7 +39,7 @@ export const Login = ()=>{
             navigate('/home')
             
         }
-    },[isAuth, navigate])
+    },[isAuth, navigate])*/
        const { register, handleSubmit} = useForm()
        const onSubmit = async (data, e)=>{
          e.preventDefault()
@@ -56,7 +56,7 @@ export const Login = ()=>{
                 'Content-Type': 'application/json',
             },
             body: body,
-            credentials: 'include', // This is equivalent to axios withCredentials: true
+            credentials: 'include', 
             };
             const response = await fetch(url, options);
             const responseData = await response.json();
@@ -70,10 +70,9 @@ export const Login = ()=>{
        }
     }
 
-    if(isAuth === 'loading')
-        return (<Spinning />)
     
-    if(!isAuth){
+    
+    
         return(
             <>  
             <Nav />      
@@ -97,6 +96,6 @@ export const Login = ()=>{
             <Footer />
             </>
         )
-    }
+    
     
 }

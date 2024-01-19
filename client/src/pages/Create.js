@@ -1,13 +1,19 @@
 import axios from "axios"
 import { useForm } from "react-hook-form"
-import { ProvincesOptions } from "../components/ProvincesOptions"
 import { useEffect, useState } from "react"
 import { AddressDataList } from "../components/AddressDataList"
-
 
 export const Create = ()=>{
     const onSubmit = async (data, e)=>{
         e.preventDefault()
+        const addressObj = {
+            city_departure: cities[0].locality,
+            prov_departure: cities[0].region_code,
+            city_arrival: destAddress[0].locality,
+            prov_arrival: destAddress[0].region_code,
+        }
+        data = {...data, ...addressObj}
+       
         try{
             const response = await axios.post(process.env.REACT_APP_API_BASE_URL + '/trips/create',
             {data},
@@ -30,117 +36,91 @@ export const Create = ()=>{
     const [destProvInput, setDestProvInput] = useState('')
     const [cities, setCities] = useState(null)
     const [destAddress, setDestAddress] = useState(null)
-    const [isAddSelected, setIsAddSelected] = useState(false)
-    const [isDestSelected, setIsDestSelected] = useState(false)
+   
     const handleFromInput = (e, set)=>{
         set(e.target.value);
     }
-    const handleBlur = (e, array, set, setSelect)=>{
-            if(array && array.length > 0){
-               const revisionedAddress = array.filter((address)=>{
-                   return address.label.toLowerCase().includes(e.target.value.toLowerCase());
-               })
-               set(revisionedAddress)
-               if(revisionedAddress && revisionedAddress[0].label.toLowerCase() === e.target.value.toLowerCase()){
-               return setSelect(true)
-           }
-           setSelect(false)
-       
+    const handleBlur = async (e)=>{
+        const input = e.target.value
+        if(input.length > 2){
+            const url = `http://api.positionstack.com/v1/forward?access_key=9cec2106fdf303b9e82a25feb084b836&country=ca&query=${input}`
+        const addressList = await fetchAddress(url)
+
+        if (addressList.data.some((address) => address.label === input)) {
+        alert('exist');
+        } else {
+        alert('not found');
+        }
+        }
+        
 
     }
-    
-}
-    useEffect(() => {
-        if (fromProvInput.trim() === '') return;
-        const fetchCitiesTimeout = setTimeout(async () => {
-          let url = `http://api.positionstack.com/v1/forward?access_key=9cec2106fdf303b9e82a25feb084b836&country=ca&query=${fromProvInput}`;
-          if(fromProvInput.trim().length>= 4){
-            try{
-                const res = await fetch(url);
-                const data = await res.json()
-                const sanatizeData = data.data.filter((address) => {
-                    return address.label && address.locality && address.region_code
-                    });
-                setCities(sanatizeData);
+    const fetchAddress = async (url)=>{
+        const res = await fetch(url);
+        return await res.json()
+    }
+    const filterAddress = async (input, setFunction) => {
+        let url = `http://api.positionstack.com/v1/forward?access_key=9cec2106fdf303b9e82a25feb084b836&country=ca&query=${input}`;
+        if(input.trim().length>= 4){
+          try{
+              const dataList = await fetchAddress(url)
+              const sanatizeData = dataList.data.filter((address) => {
+                  return address.label && 
+                  address.locality && 
+                  address.region_code
+                  });
+              
+              setFunction(sanatizeData);
 
-            }
-            catch(err){
-                console.log(err)
-            }
-            
+          }
+          catch(err){
+              console.log(err)
           }
           
-        }, 1000);
+        }
+        
+      }
+    
+    
+    useEffect(() => {
+        if(destProvInput.trim === '') return
+        const fetchCitiesTimeout = setTimeout(()=>filterAddress(fromProvInput, setCities), 1000)
       
         return () => clearTimeout(fetchCitiesTimeout);
       }, [fromProvInput]);
 
       useEffect(() => {
-        if (destProvInput.trim() === '') return;
-        const fetchAddressTimeout = setTimeout(async () => {
-          let url = `http://api.positionstack.com/v1/forward?access_key=9cec2106fdf303b9e82a25feb084b836&country=ca&query=${destProvInput}`;
-          if(destProvInput.trim().length>= 4){
-            try{
-                const res = await fetch(url);
-                const data = await res.json()
-                const sanatizeData = data.data.filter((address) => {
-                    return address.label && address.locality && address.region_code
-                    });
-                setDestAddress(sanatizeData);
+        if(destProvInput.trim === '') return
+        const fetchAddressTimeout = setTimeout(()=>filterAddress(destProvInput, setDestAddress), 1000)
 
-            }
-            catch(err){
-                console.log(err)
-            }
-            
-          }
-          
-        }, 1000);
       
         return () => clearTimeout(fetchAddressTimeout);
       }, [destProvInput]);
+
+      
     return (
         <form id="createForm" onSubmit={handleSubmit(onSubmit)}>
       <h1>Post Your Trip</h1>
       <input 
-        type="text" 
         {...register('add_departure')} 
-        onFocus={()=>setIsAddSelected(false)}
-        onBlur={(e)=> {
-            handleBlur(e, cities, setCities, setIsAddSelected)
-       }}
-        onChange={(e)=>{handleFromInput(e, setFromProvInput)}} 
+        type="text"
+        id="add_departure"
+        onChange={(e)=>{handleFromInput(e, setFromProvInput)}}
+        onBlur={(e)=>{handleBlur(e)}}
         placeholder="departure address ex: 123 main street, city, province, Canada" 
         list="fromProvList"/>
-      <input 
-            {...register('city_departure')} 
-            type="text" 
-            value={isAddSelected && cities && cities.length > 0 ? cities[0].locality : ''}
-            placeholder="departure City" readOnly
-             />
-      <select {...register('prov_departure')} value={isAddSelected && cities && cities.length > 0?cities[0].region_code:''} required>
-        <ProvincesOptions />
-      </select>
-      <AddressDataList id="fromProvList" addresses={cities} />
-      
+        <AddressDataList id="fromProvList" addresses={cities} />
       <input {...register('add_arrival')} type="text"
       onChange={(e)=>handleFromInput(e, setDestProvInput)}
-      onBlur={(e)=>{handleBlur(e, destAddress, setDestAddress, setIsDestSelected)}}
-      onFocus={(e)=>{setIsDestSelected(false)}}
+      onBlur={(e)=>{handleBlur(e)}}
       placeholder="Arrival address ex. 127 street name, city, PR, Canada"
+      required
       list="destProvList"
       />
        <AddressDataList id="destProvList" addresses={destAddress} />
-      <input {...register('city_arrival')} 
-        value={isDestSelected && destAddress && destAddress.length > 0 ? destAddress[0].locality : ''}
-        type="text" 
-        placeholder="arrival City"
-         />
-      <select {...register('prov_arrival')} value={isDestSelected && destAddress && destAddress.length > 0?destAddress[0].region_code:''} required>
-        <ProvincesOptions />
-      </select>
-      <input {...register('seats_available')} type="number" min={1} max={7} placeholder="Available seats" />
-      <input {...register('date')} type="date" placeholder="Date" />
+      
+      <input {...register('seats_available')} type="number" min={1} max={7} placeholder="Available seats"  required/>
+      <input {...register('date')} type="date" placeholder="Date" required />
       
       <input type="submit" value="Post" />
     </form>

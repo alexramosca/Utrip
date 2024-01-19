@@ -7,7 +7,7 @@ export const Trip = (props)=>{
             <div className="driverDetailsWrapper">
                 {driverUser && (
                     <img
-                        src={`public/profilePictures/${driverUser.profilePicture}`}
+                        src={`${process.env.REACT_APP_PUBLIC_API_BASE_PUBLIC}profilepictures/${driverUser.profilePicture}`}
                         alt="Driver Profile"
                     />
                     )}
@@ -15,7 +15,7 @@ export const Trip = (props)=>{
 
             </div>
             <div className="tripDetailsWrapper">
-                <h2>{props.trip.city_departure} &#8594; {props.trip.city_arrival}</h2>
+                <h2>{props.trip.city_departure} {props.trip.prov_departure} &#8594; {props.trip.city_arrival} {props.trip.prov_arrival}</h2>
                 <h3>Date: {props.trip.date}</h3>
                 <p>Seats Available: {props.trip.seats_available}</p>
             </div>
