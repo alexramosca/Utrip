@@ -1,10 +1,12 @@
 const express = require('express')
 const User = require('../models/User')
 const User_trip = require('../models/User_trip.js')
+const Applications = require('../models/Applications.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const router = express.Router();
 const Auth = require('../middlewares/Auth.js')
+const CheckDoubleApplications = require('../middlewares/CheckDoubleApplications.js')
 require('dotenv').config();
 
 
@@ -111,7 +113,34 @@ router.get('/logout', async (req, res) => {
     }
   });
   
-  router.post('/apply', async (req, res)=>{
+  router.post('/apply', Auth, CheckDoubleApplications, async(req, res)=>{
+    const requester_id = req.userId
+    const driver_id = req.body.driver_id
+    const TripId = req.body.TripId
+    if(requester_id === driver_id){
+        return res.status(400).json({error: "You cannot apply for a trip you created!"})
+    }
+    try{
+        const apply = await Applications.create({
+            requester_id,
+            driver_id,
+            TripId
+        })
+        if(apply){
+            res.status(201).json("Your application has been made successfully")
+        }
+        else{
+            res.status(400).json({error: "Something went wrong."})
+        }
+    }
+    catch(err){
+        res.status(500).json({error: "Internal error"})
+    }
+    
+    
+  })
+
+  router.post('/confirmapplication', async (req, res)=>{
     let userId= req.body.userId;
     let tripId = req.body.tripId;
     console.log(req.body)

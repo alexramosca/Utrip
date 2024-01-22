@@ -1,5 +1,30 @@
 export const Trip = (props)=>{
     const driverUser = props.trip.Users.find((user) => user.User_trip.isDriver);
+    const handleApplication = async (driver_id, TripId) => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/apply`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              driver_id,
+              TripId,
+            }),
+          });
+          const data = await response.json()
+      
+          if (response.ok) {
+            alert('You have successfully applied to the trip!');
+          } else {
+            alert(data.error);
+          }
+        } catch (err) {
+          console.error('Error in application', err);
+        }
+      };
+      
 
 
     return(
@@ -20,7 +45,7 @@ export const Trip = (props)=>{
                 <p>Seats Available: {props.trip.seats_available}</p>
             </div>
             <div className="ApplyDetailsWrapper">
-                <button className="btnApply">Apply</button>
+                <button onClick={()=>{handleApplication(driverUser.UserId, props.trip.TripId)}} className="btnApply">Apply</button>
             </div>
         </div>
     )
