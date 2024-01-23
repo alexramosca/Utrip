@@ -61,7 +61,7 @@ router.get('/test', Auth, async (req, res)=>{
 
 router.post('/create', Auth, async (req, res)=>{
  
-    const trip = req.body.data
+    const trip = req.body.upData
     console.log(trip)
     const userId = req.userId
     try{

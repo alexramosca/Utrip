@@ -6,6 +6,7 @@ import { Home } from "./Home"
 
 export const Create = ()=>{
     const onSubmit = async (data, e)=>{
+        console.log(data)
         e.preventDefault()
         const addressObj = {
             city_departure: cities[0].locality,
@@ -13,11 +14,12 @@ export const Create = ()=>{
             city_arrival: destAddress[0].locality,
             prov_arrival: destAddress[0].region_code,
         }
-        data = {...data, ...addressObj}
-       
+        const upData = {...data, ...addressObj}
+    
+      console.log(upData)
         try{
             const response = await axios.post(process.env.REACT_APP_API_BASE_URL + '/trips/create',
-            {data},
+            {upData},
             {withCredentials: true}
             ,)
             if(response.status === 200){
@@ -39,6 +41,8 @@ export const Create = ()=>{
     const [destAddress, setDestAddress] = useState(null)
     const [isRightFrom, setIsRightFrom] = useState('nothing')
     const [isRightDest, setIsRightDest] = useState('nothing')
+
+    
    
     const handleFromInput = (e, set)=>{
         set(e.target.value);
@@ -87,7 +91,7 @@ export const Create = ()=>{
     useEffect(() => {
         if(destProvInput.trim === '') return
         const fetchCitiesTimeout = setTimeout(()=>filterAddress(fromProvInput, setCities), 1000)
-      
+        
         return () => clearTimeout(fetchCitiesTimeout);
       }, [fromProvInput]);
 
@@ -110,14 +114,14 @@ export const Create = ()=>{
         type="text"
         id="add_departure"
         onChange={(e)=>{handleFromInput(e, setFromProvInput)}}
-        onBlur={(e)=>{handleBlur(e, setIsRightFrom)}}
+        //onBlur={(e)=>{handleBlur(e, setIsRightFrom)}}
         placeholder="departure address ex: 123 main street, city, province, Canada" 
         list="fromProvList"/>
         <AddressDataList id="fromProvList" addresses={cities} />
         {isRightFrom?'':<span className="errMsg">address not found</span>}
       <input {...register('add_arrival')} type="text"
       onChange={(e)=>handleFromInput(e, setDestProvInput)}
-      onBlur={(e)=>{handleBlur(e, setIsRightDest)}}
+      //onBlur={(e)=>{handleBlur(e, setIsRightDest)}}
       placeholder="Arrival address ex. 127 street name, city, PR, Canada"
       required
       list="destProvList"
