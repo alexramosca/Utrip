@@ -11,6 +11,7 @@ import { NotFound } from './components/NotFound';
 import { Explore } from './pages/Explore';
 import { Test } from './pages/Test';
 import { Create } from './pages/Create';
+import { MyTrips } from './pages/MyTrips';
 
 export const UserContext = createContext()
 function App() {
@@ -27,11 +28,12 @@ function App() {
         
         <Route path="/register" element={<Register />}/>
         <Route path="/login" element={<Login />}/>
-        <Route path="/home" element={<Home />}>
-            <Route index element={<Explore />}/>
-            <Route path='create' element={<Create />} />
+        
+        <Route path="/dash/explore" element={<Explore />}/>
+        <Route path='/dash/create' element={<Create />} />
+        <Route path='/dash/mytrips' element={<MyTrips />} />
             
-        </Route>
+        
         <Route path="*" element={<NotFound />} />
   
       </Routes>

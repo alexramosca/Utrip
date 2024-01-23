@@ -78,9 +78,10 @@
 
 .navItem{
     text-decoration: none;
-    color: white;
+    color: rgb(147, 147, 147);
     z-index: 999;
 }
+
 
 button{
     z-index: 999;
@@ -125,7 +126,7 @@ button{
 
 .tripsPageWrapper{
     display: flex;
-    width: 70vw;
+    width: 100vw;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
@@ -152,6 +153,10 @@ datalist{
 .errMsg{
     font-size: 8pt;
     color: red;
+}
+#iconBell{
+    width: clamp(40px, 2vw, 80px);
+
 }
 
 @media screen and (min-width: 1024px) {

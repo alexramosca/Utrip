@@ -5,6 +5,7 @@ import { Spinning } from "../components/Spinning";
 import { useState, useEffect } from "react";
 import './home.css';
 import { PostData } from "../utilities/PostData";
+import { Home } from "./Home";
 
 export const Explore = () => {
   const [isAuth, setIsAuth] = useState('loading')
@@ -24,6 +25,7 @@ export const Explore = () => {
     try{
       return (
         <div>
+          <Home />
           {trips.data && trips.isLoading ? (
             <Spinning />
           ) : trips.error ? (

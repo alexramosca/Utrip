@@ -59,8 +59,8 @@ nav:not(.painelNav){
     
 }
 
-.active {
-    color:black;
+.navItem:where(.active) {
+    color:white;
     font-weight: bold;
    
 }

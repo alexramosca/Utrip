@@ -36,7 +36,7 @@ export const Login = ()=>{
     }, [])*/
     useEffect(()=>{
         if(isAuth === true){
-            navigate('/home')
+            navigate('/dash/explore')
             
         }
     },[isAuth, navigate])

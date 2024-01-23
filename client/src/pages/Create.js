@@ -2,6 +2,7 @@ import axios from "axios"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from "react"
 import { AddressDataList } from "../components/AddressDataList"
+import { Home } from "./Home"
 
 export const Create = ()=>{
     const onSubmit = async (data, e)=>{
@@ -100,6 +101,8 @@ export const Create = ()=>{
 
       
     return (
+        <>
+        <Home />
         <form id="createForm" onSubmit={handleSubmit(onSubmit)}>
       <h1>Post Your Trip</h1>
       <input 
@@ -127,5 +130,6 @@ export const Create = ()=>{
       
       <input type="submit" value="Post" />
     </form>
+    </>
     )
 }

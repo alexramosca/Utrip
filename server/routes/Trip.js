@@ -29,19 +29,19 @@ router.get('/', Auth, async (req, res) => {
     }
   });
 
-router.get('/:id', Auth, async (req, res)=>{
-  
+router.get('/mytrips', Auth, async (req, res)=>{
+  console.log(req.userId)
+  const userId = req.userId
   try {
-    const userTrips = await Trip.findOne({
-      where: {
-        TripId: req.params.id
-      },
+    const userTrips = await Trip.findAll({
+      
       include: [
         {
           model: User,
           through: User_trip,
+          where: {UserId: userId},
           attributes: {
-            exclude: ['password']
+            exclude: ["password"]
           }
         },
       ],

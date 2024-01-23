@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 import { NavItem } from "./NavItem"
 export const NavBar = () => {
     return (
-        <div className="navWrapper">
+        <div className="navWrapper dash">
             <ul>
             <NavItem path="/" name="Home" />
             <NavItem path="/login" name="Sign In" />

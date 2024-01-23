@@ -13,9 +13,9 @@ export const Home = () => {
         setIsOpen(!isOpen)
     }
     const navMenuItems = [
-        { name: 'Explore', path: '/home' },
-        {name: 'Create', path: '/home/create'},
-        { name: 'Profile', path: '/profile' },
+        { name: 'Explore', path: '/dash/explore' },
+        {name: 'Create', path: '/dash/create'},
+        { name: 'MyTrips', path: '/dash/mytrips' },
         { name: 'Settings', path: '/settings' },
         
       ];
@@ -37,14 +37,14 @@ export const Home = () => {
         <>
         <nav className="painelNav">
           <div>
-        <img id="navLogo" src='./icons/logo.png' />
+        <img id="navLogo" src='/icons/logo.png' />
         </div>
           <SearchBar />
          
             <img 
             className={isOpen ? 'rotate90' : undefined} 
             onClick={handleMenu}
-            id='hambMenu' src='./icons/menu.svg' />
+            id='hambMenu' src='/icons/menu.svg' />
             
             <div className="navWrapper">
               <ul>
@@ -64,7 +64,6 @@ export const Home = () => {
            
             
         </nav>
-        <Outlet />
         </>
     )
    

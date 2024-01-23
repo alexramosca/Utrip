@@ -30,13 +30,13 @@ export const Nav = ()=>{
         <>
         <nav>
             <div>
-                <img id="navLogo" src='./icons/logo.png' />
+                <img id="navLogo" src='/icons/logo.png' />
             </div>
             <NavBar />
-            <dialog className="mobileMenuWrapper">
+            <dialog className="mobileMenuWrapper dash">
              <MobileNavBar handleMenu = {handleMenu}/>
              </dialog>
-            <img id='hambMenu' onClick={()=> handleMenu()} src='./icons/menu.svg' />
+            <img id='hambMenu' onClick={()=> handleMenu()} src='/icons/menu.svg' />
         </nav>
        
         </>

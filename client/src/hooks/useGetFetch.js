@@ -14,12 +14,12 @@ const useGetFetch = (url) => {
     return res;
   };
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['main'],
     queryFn: fetchData,
   });
 
-  return { data, isLoading, error, fetchData };
+  return { data, isLoading, error, fetchData, refetch};
 };
 
 export default useGetFetch;
