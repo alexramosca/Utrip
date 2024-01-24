@@ -1,23 +1,30 @@
 import axios from "axios"
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { AddressDataList } from "../components/AddressDataList"
 import { Home } from "./Home"
+import { FetchAddress } from "../utilities/FetchAddress"
 
 export const Create = ()=>{
     const onSubmit = async (data, e)=>{
-        console.log(data)
-        e.preventDefault()
+        try{
+            e.preventDefault()
+        
+        const add_departure = await FetchAddress(data.add_departure)
+        console.log("departure", add_departure.data)
+        const cities = add_departure.data.find((address)=> data.add_departure === address.label)
+        const dest_address = await FetchAddress(data.add_arrival)
+        const destAddress = dest_address.data.find((address)=>data.add_arrival === address.label)
+        console.log("arrival", destAddress)
+       
         const addressObj = {
-            city_departure: cities[0].locality,
-            prov_departure: cities[0].region_code,
-            city_arrival: destAddress[0].locality,
-            prov_arrival: destAddress[0].region_code,
+            city_departure: cities.locality,
+            prov_departure: cities.region_code,
+            city_arrival: destAddress.locality,
+            prov_arrival: destAddress.region_code,
         }
         const upData = {...data, ...addressObj}
-    
-      console.log(upData)
-        try{
+
             const response = await axios.post(process.env.REACT_APP_API_BASE_URL + '/trips/create',
             {upData},
             {withCredentials: true}
@@ -30,80 +37,18 @@ export const Create = ()=>{
                 alert('something went wrong')
             }
         }
-        catch{
-            alert('internal error, try again')
+        catch(err){
+            alert(err)
         }
     }
     const {register, handleSubmit, reset} = useForm()
-    const [fromProvInput, setFromProvInput] = useState('')
-    const [destProvInput, setDestProvInput] = useState('')
-    const [cities, setCities] = useState(null)
-    const [destAddress, setDestAddress] = useState(null)
-    const [isRightFrom, setIsRightFrom] = useState('nothing')
-    const [isRightDest, setIsRightDest] = useState('nothing')
-
+    const [fromInput, setFromInput] = useState('')
+    const [destInput, setDestInput] = useState('')
     
    
-    const handleFromInput = (e, set)=>{
+    const handleInput = (e, set)=>{
         set(e.target.value);
     }
-    const handleBlur = async (e, setFunction)=>{
-        const input = e.target.value
-        if(input.length > 2){
-            const url = `http://api.positionstack.com/v1/forward?access_key=9cec2106fdf303b9e82a25feb084b836&country=ca&query=${input}`
-        const addressList = await fetchAddress(url)
-
-        if (addressList.data.some((address) => address.label === input)) {
-            setFunction(true)
-        } else {
-            setFunction(false)
-        }
-        }
-        
-
-    }
-    const fetchAddress = async (url)=>{
-        const res = await fetch(url);
-        return await res.json()
-    }
-    const filterAddress = async (input, setFunction) => {
-        let url = `http://api.positionstack.com/v1/forward?access_key=9cec2106fdf303b9e82a25feb084b836&country=ca&query=${input}`;
-        if(input.trim().length>= 4){
-          try{
-              const dataList = await fetchAddress(url)
-              const sanatizeData = dataList.data.filter((address) => {
-                  return address.label && 
-                  address.locality && 
-                  address.region_code
-                  });
-              
-              setFunction(sanatizeData);
-
-          }
-          catch(err){
-              console.log(err)
-          }
-          
-        }
-        
-      }
-    
-    useEffect(() => {
-        if(destProvInput.trim === '') return
-        const fetchCitiesTimeout = setTimeout(()=>filterAddress(fromProvInput, setCities), 1000)
-        
-        return () => clearTimeout(fetchCitiesTimeout);
-      }, [fromProvInput]);
-
-      useEffect(() => {
-        if(destProvInput.trim === '') return
-        const fetchAddressTimeout = setTimeout(()=>filterAddress(destProvInput, setDestAddress), 1000)
-
-      
-        return () => clearTimeout(fetchAddressTimeout);
-      }, [destProvInput]);
-
-      
     return (
         <>
         <Home />
@@ -113,21 +58,21 @@ export const Create = ()=>{
         {...register('add_departure')} 
         type="text"
         id="add_departure"
-        onChange={(e)=>{handleFromInput(e, setFromProvInput)}}
-        //onBlur={(e)=>{handleBlur(e, setIsRightFrom)}}
+        onChange={(e)=>{handleInput(e, setFromInput)}}
+        
         placeholder="departure address ex: 123 main street, city, province, Canada" 
         list="fromProvList"/>
-        <AddressDataList id="fromProvList" addresses={cities} />
-        {isRightFrom?'':<span className="errMsg">address not found</span>}
+        <AddressDataList id="fromProvList" input={fromInput} />
+       
       <input {...register('add_arrival')} type="text"
-      onChange={(e)=>handleFromInput(e, setDestProvInput)}
-      //onBlur={(e)=>{handleBlur(e, setIsRightDest)}}
+      onChange={(e)=>handleInput(e, setDestInput)}
+   
       placeholder="Arrival address ex. 127 street name, city, PR, Canada"
       required
       list="destProvList"
       />
-      {isRightDest?'':<span className="errMsg">address not found</span>}
-       <AddressDataList id="destProvList" addresses={destAddress} />
+      
+       <AddressDataList id="destProvList" input={destInput} />
       
       <input {...register('seats_available')} type="number" min={1} max={7} placeholder="Available seats"  required/>
       <input {...register('date')} type="date" placeholder="Date" required />
