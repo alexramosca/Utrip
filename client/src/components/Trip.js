@@ -1,7 +1,9 @@
 import { Children } from "react";
 
 export const Trip = (props)=>{
-    const driverUser = props.trip.Users.find((user) => user.User_trip.isDriver);  
+    const driverUser = props.trip.Users.find((user) => user.User_trip.isDriver);
+    
+    
     const {children} = props
 
     return(

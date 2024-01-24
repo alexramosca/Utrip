@@ -5,7 +5,6 @@ import {useEffect, useState} from 'react'
 
 export const Nav = ()=>{
     const [isOpen, setIsOpen] = useState(false)
-
     const handleMenu = ()=>{
         setIsOpen(!isOpen)
     }

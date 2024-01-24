@@ -25,13 +25,17 @@ export const MyTrips = ()=>{
         if(trips){
             console.log(trips)
             return (
-                <div className="tripsPageWrapper">
+                <>
                 <Home />
+                <div className="tripsPageWrapper">
+                
                 {trips.map((item, index)=>{
                     return <Trip key={index} trip={item} >
                         </Trip>
                 })}
+              
                 </div>
+                </>
             )
         }
     

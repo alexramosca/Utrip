@@ -4,13 +4,17 @@ import { SearchBar } from "../components/SearchBar"
 import { Menu } from "../components/Menu"
 import { BtnLogout } from "../components/BtnLogout"
 import './home.css'
+import { set } from "react-hook-form"
+import { ModalNotifications } from "../components/ModalNotifications"
 
 
 
 export const Home = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const handleMenu = ()=>{
-        setIsOpen(!isOpen)
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+
+    const handleMenu = (setFunction, state)=>{
+        setFunction(!state)
     }
     const navMenuItems = [
         { name: 'Explore', path: '/dash/explore' },
@@ -22,7 +26,7 @@ export const Home = () => {
       useEffect(() => {
         const body = document.querySelector('body');
         
-        if (isOpen) {
+        if (isOpen || isNotificationOpen) {
           body.classList.add('lock');
         } else {
           body.classList.remove('lock');
@@ -31,7 +35,7 @@ export const Home = () => {
         return () => {
           body.classList.remove('lock');
         };
-      }, [isOpen]);
+      }, [isOpen, isNotificationOpen]);
       
     return(
         <>
@@ -39,11 +43,11 @@ export const Home = () => {
           <div>
         <img id="navLogo" src='/icons/logo.png' />
         </div>
-          <SearchBar />
+         {/*} <SearchBar />*/}
          
             <img 
             className={isOpen ? 'rotate90' : undefined} 
-            onClick={handleMenu}
+            onClick={()=>{handleMenu(setIsOpen, isOpen)}}
             id='hambMenu' src='/icons/menu.svg' />
             
             <div className="navWrapper">
@@ -62,8 +66,12 @@ export const Home = () => {
            
             
            
-            
+            <div onClick={()=>{handleMenu(setIsNotificationOpen, isNotificationOpen)}} className="notImgWrapper">
+              <img id="iconBell" src="/icons/notification.svg" alt="bell icon" />
+            </div>
         </nav>
+
+        {isNotificationOpen?<ModalNotifications />:undefined}
         </>
     )
    

@@ -3,6 +3,10 @@
     padding: 0;
     margin: 0;
 }
+
+.lock{
+    overflow: hidden;
+}
 .logoSearchWrapper{
     display: flex;
     justify-content: center;
@@ -29,7 +33,7 @@
     
     
     &>*{
-        width: 33%;
+        width: 50%;
     }
     
 }
@@ -154,10 +158,34 @@ datalist{
     font-size: 8pt;
     color: red;
 }
+.notImgWrapper{
+    display: flex;
+    justify-content: flex-end;
+}
 #iconBell{
     width: clamp(40px, 2vw, 80px);
+    filter: invert(100%);
+    z-index: 9999;
 
 }
+
+.modal{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    z-index: 9990;
+    color: white;
+}
+.notLineWrapper{
+    width: 100%;
+    display: flex;
+    &>img{
+        width: 40px;
+    }
+}
+
+
 
 @media screen and (min-width: 1024px) {
     .mobileMenu{

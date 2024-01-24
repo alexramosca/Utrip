@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const router = express.Router();
 const Auth = require('../middlewares/Auth.js')
 const CheckDoubleApplications = require('../middlewares/CheckDoubleApplications.js')
+const Trip = require('../models/Trip.js')
 require('dotenv').config();
 
 
@@ -112,6 +113,42 @@ router.get('/logout', async (req, res) => {
       res.status(500).json('Error clearing cookie');
     }
   });
+  router.get('/applicationsbyuser', Auth, async(req, res)=>{
+    const userId = req.userId
+    console.log(userId)
+    try{
+        const applications = await Applications.findAll({
+            include: [
+              {
+                model: User,
+                as: 'RequestUser',
+                attributes: { exclude: ['password'] },
+              },
+              {
+                model: User,
+                as: 'Driver',
+                attributes: { exclude: ['password'] },
+              },
+              {
+                model: Trip, 
+              },
+            ],
+        
+            where:{driver_id: userId}
+          });
+          if(applications){
+            res.status(200).json(applications)
+          }
+          else{
+            res.status(404).json("No applications found")
+          }
+          
+    }
+    catch(err){
+        res.status(500).json("Internal error")
+    }
+
+  })
   
   router.post('/apply', Auth, CheckDoubleApplications, async(req, res)=>{
     const requester_id = req.userId
@@ -140,7 +177,36 @@ router.get('/logout', async (req, res) => {
     
   })
 
-  router.post('/confirmapplication', async (req, res)=>{
+  router.post('/applications/confirm', Auth, async(req, res)=>{
+        console.log(req.body)
+        const driver_id = req.userId
+        const requester_id = req.body.requester_id
+        const applicationId = req.body.application_id
+        try{
+            const application = await Applications.findOne({
+                where: {
+                  driver_id,
+                  requester_id,
+                  application_id: applicationId,
+                },
+              });
+              
+            if(application){
+                await application.update({is_active: true})
+                res.status(200).json('Application confirmed')
+            }
+            else {
+                res.status(404).json("No application found")
+            }
+        }
+        catch(err){
+            console.log(err)
+            res.status(500).json("Internal error")
+        }
+        
+  })
+
+  /*router.post('/confirmapplication', async (req, res)=>{
     let userId= req.body.userId;
     let tripId = req.body.tripId;
     console.log(req.body)
@@ -163,7 +229,7 @@ router.get('/logout', async (req, res) => {
     }
     
 
-  })
+  })*/
 
 
 module.exports = router

@@ -1,5 +1,6 @@
 const sequelize = require('../config/config.js')
 const { DataTypes } = require("sequelize")
+const  User_trip  = require('./User_trip.js');
 
 
 
@@ -16,7 +17,23 @@ const Applications = sequelize.define('Applications', {
         allowNull: false
     },
 }, {
-    timestamps: false
+    timestamps: false,
+    hooks: {
+        afterUpdate: async (application, options) => {
+            const applicationFields = application.dataValues
+            if (application.is_active) {
+               
+            await User_trip.create(
+              {
+                UserId: applicationFields.requester_id,
+                TripId: applicationFields.TripId,
+                isDriver: false
+              },
+              { transaction: options.transaction }
+            );
+          }
+        },
+      },
 })
 
 module.exports = Applications

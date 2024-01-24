@@ -4,7 +4,8 @@ const Trip = require('../models/Trip.js')
 const User_trip = require('../models/User_trip.js')
 const User = require('../models/User.js')
 const jwt = require('jsonwebtoken')
-const Auth = require('../middlewares/Auth.js')
+const Auth = require('../middlewares/Auth.js');
+
 
 
 
@@ -29,26 +30,31 @@ router.get('/', Auth, async (req, res) => {
     }
   });
 
+  //Need change for better performace in future
 router.get('/mytrips', Auth, async (req, res)=>{
   console.log(req.userId)
   const userId = req.userId
   try {
-    const userTrips = await Trip.findAll({
-      
-      include: [
-        {
-          model: User,
-          through: User_trip,
-          where: {UserId: userId},
-          attributes: {
-            exclude: ["password"]
-          }
-        },
-      ],
-    });
+    const trips = await Trip.findAll({
+      include: {
+        model: User,
+        through: User_trip
+      }
+    })
+    
+    const filteredTrip = trips.filter((trip)=>{
+        return trip.Users.some((user)=> user.UserId === userId)
+    })
 
-    res.json(userTrips);
-  } catch (error) {
+    if(filteredTrip){
+      res.status(200).json(filteredTrip)
+    }
+    else{
+      res.status(404).json("no trips found to the user")
+    }
+  } 
+  
+  catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
