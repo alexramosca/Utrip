@@ -12,6 +12,7 @@ export const Explore = () => {
   const trips = useGetFetch('/trips');
   const navigate = useNavigate()
 
+  
   const handleApplication = async (driver_id, TripId)=>{
     const body = {driver_id, TripId}
     const application = await PostData('/users/apply', body)
@@ -23,7 +24,6 @@ export const Explore = () => {
   
   {
     try{
-      console.log(trips.data.data)
       return (
         <div>
           <Home />

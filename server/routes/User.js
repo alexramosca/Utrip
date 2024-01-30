@@ -26,6 +26,24 @@ router.get('/', async (req, res)=>{
         res.status(500).json({error: "Internal error"})
     }
 })
+
+router.get('/sse', Auth, (req, res)=>{
+    const driver_id = req.userId
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    const sendSSE = (data) => res.write(`data: ${JSON.stringify(data)}\n\n`);
+
+    Applications.afterCreate((application)=>{
+        if(application.dataValues.status === 'PENDING' && application.dataValues.driver_id === driver_id){
+                sendSSE({event: 'application', data: "You have a new application"}) 
+        }
+        return
+    })
+})
+
 router.post('/register', async(req, res) =>{
     const user = req.body
    
