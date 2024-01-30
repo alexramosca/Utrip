@@ -10,7 +10,7 @@ export const ModalNotifications = () => {
       try {
         const response = await GetData('/users/applicationsbyuser');
         const filteredResponse = response.filter((item)=>{
-            return item.is_active === false
+            return item.status === 'PENDING'
         })
         setApplications(filteredResponse);
       } catch (error) {

@@ -11,9 +11,9 @@ const Applications = sequelize.define('Applications', {
         primaryKey: true,
         autoIncrement:true
     },
-    is_active:{
-        type:DataTypes.BOOLEAN,
-        defaultValue:false,
+    status:{
+        type: DataTypes.ENUM('PENDING', 'ACCEPTED', 'REJECTED'),
+        defaultValue: 'PENDING',
         allowNull: false
     },
 }, {
@@ -21,7 +21,7 @@ const Applications = sequelize.define('Applications', {
     hooks: {
         afterUpdate: async (application, options) => {
             const applicationFields = application.dataValues
-            if (application.is_active) {
+            if (application.status === 'ACCEPTED') {
                
             await User_trip.create(
               {

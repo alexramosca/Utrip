@@ -192,7 +192,7 @@ router.get('/logout', async (req, res) => {
               });
               
             if(application){
-                await application.update({is_active: true})
+                await application.update({status: 'ACCEPTED'})
                 res.status(200).json('Application confirmed')
             }
             else {
