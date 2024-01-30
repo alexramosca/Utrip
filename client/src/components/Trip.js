@@ -11,7 +11,7 @@ export const Trip = (props)=>{
             <div className="driverDetailsWrapper">
                 {driverUser && (
                     <img
-                        src={`${process.env.REACT_APP_PUBLIC_API_BASE_PUBLIC}profilepictures/${driverUser.profilePicture}`}
+                        src={`${process.env.REACT_APP_PUBLIC_API_BASE_PUBLIC}/profilepictures/${driverUser.profilePicture}`}
                         alt="Driver Profile"
                     />
                     )}

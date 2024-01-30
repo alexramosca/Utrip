@@ -205,6 +205,16 @@ datalist{
     
 }
 
+.circleClass::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%; 
+    z-index: 999999;
+  }
+
 
 
 @media screen and (min-width: 1024px) {

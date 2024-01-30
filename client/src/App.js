@@ -28,11 +28,10 @@ function App() {
         
         <Route path="/register" element={<Register />}/>
         <Route path="/login" element={<Login />}/>
-        
         <Route path="/dash/explore" element={<Explore />}/>
         <Route path='/dash/create' element={<Create />} />
         <Route path='/dash/mytrips' element={<MyTrips />} />
-            
+       
         
         <Route path="*" element={<NotFound />} />
   
