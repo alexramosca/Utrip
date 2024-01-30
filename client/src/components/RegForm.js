@@ -12,7 +12,7 @@ export const RegForm = () => {
     const schema = yup.object().shape({
         firstName: yup.string().required(),
         lastName: yup.string().required(),
-        email: yup.string().email().required().test("is-available", "Email not available", async (value)=>{
+        /*email: yup.string().email().required().test("is-available", "Email not available", async (value)=>{
             try {
                 const response = await axios.post(
                   `${process.env.REACT_APP_API_BASE_URL}/users/checkEmail`,
@@ -37,7 +37,7 @@ export const RegForm = () => {
             catch(err){
                 console.log(err)
             }
-        }),
+        }),*/
         password: yup.string().required().min(6),
         confPassword: yup.string().oneOf([yup.ref("password"), null]).required(),
         phone: yup.string().matches(phonePattern),

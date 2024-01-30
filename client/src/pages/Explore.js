@@ -23,13 +23,14 @@ export const Explore = () => {
   
   {
     try{
+      console.log(trips.data.data)
       return (
         <div>
           <Home />
           {trips.data && trips.isLoading ? (
             <Spinning />
           ) : trips.error ? (
-            navigate('/login')
+              navigate('/login')
           ) : (
             <div className="tripsPageWrapper">
               {trips && trips?.data?.data?.map((item, index) => {
@@ -49,7 +50,7 @@ export const Explore = () => {
         </div>
       );
     }
-    catch{
+    catch(err){
       navigate('/login')
     }
   }
