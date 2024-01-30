@@ -27,7 +27,7 @@
     background-color: black;
     width: 100vw;
     
-        &>img{
+        &>div>img{
             filter: invert(100%);
         }
     
@@ -91,12 +91,18 @@ button{
     z-index: 999;
 }
 .painelNav>.navWrapper{
-    width: 30%;
+    width: 45%;
+    display: none;
     &>ul{
-        display: flex;
+       
         justify-content: space-evenly;
+        gap: 1rem;
         z-index: 1;
     }
+    &>div{
+        margin-left: auto;
+    }
+    
 }
 
 .tripWrapper{
@@ -123,6 +129,9 @@ button{
     }
     &>div>img{
             width: clamp(80px, 5vw, 110px);
+            aspect-ratio: 1;
+            border-radius: 100px;
+            object-fit: cover;
     }
     overflow: hidden;
     
@@ -218,6 +227,12 @@ datalist{
 
 
 @media screen and (min-width: 1024px) {
+    .mobileNotificationDiv{
+        display: none;
+    }
+    .painelNav>.navWrapper{
+        display: flex;
+    }
     .mobileMenu{
         display: none;
         &>ul{

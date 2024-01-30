@@ -65,7 +65,11 @@ export const Home = () => {
         <img id="navLogo" src='/icons/logo.png' />
         </div>
          {/*} <SearchBar />*/}
-         
+            <div className='mobileNotificationDiv'>
+            <div onClick={()=>{handleMenu(setIsNotificationOpen, isNotificationOpen)}} className={update?'notImgWrapper circleClass': 'notImgWrapper'}>
+                  <img id="iconBell" src="/icons/notification.svg" alt="bell icon" />
+              </div> 
+            </div>
             <img 
             className={isOpen ? 'rotate90' : undefined} 
             onClick={()=>{handleMenu(setIsOpen, isOpen)}}
@@ -75,7 +79,10 @@ export const Home = () => {
               <ul>
                 <Menu menu = {navMenuItems} />
                 <BtnLogout />
-              </ul>          
+              </ul>
+                <div onClick={()=>{handleMenu(setIsNotificationOpen, isNotificationOpen)}} className={update?'notImgWrapper circleClass': 'notImgWrapper'}>
+                  <img id="iconBell" src="/icons/notification.svg" alt="bell icon" />
+              </div>         
             </div>
             <div className={isOpen?"mobileMenu opacity100":"mobileMenu opacity0"} >
               <ul id="ulMenu">
@@ -87,9 +94,8 @@ export const Home = () => {
            
             
            
-            <div onClick={()=>{handleMenu(setIsNotificationOpen, isNotificationOpen)}} className={update?'notImgWrapper circleClass': 'notImgWrapper'}>
-              <img id="iconBell" src="/icons/notification.svg" alt="bell icon" />
-            </div>
+            
+           
         </nav>
 
         {isNotificationOpen?<ModalNotifications />:undefined}

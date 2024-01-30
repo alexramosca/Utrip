@@ -375,7 +375,7 @@ article h2 {
 
   @media screen and (min-width: 1024px) {
     .navWrapper{
-        display: inline;
+        display: flex;
     }
     #hambMenu{
         display: none;
