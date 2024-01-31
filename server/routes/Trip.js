@@ -10,6 +10,12 @@ const Auth = require('../middlewares/Auth.js');
 
 
 router.get('/', Auth, async (req, res) => {
+    const LIMIT_ITEMS = 5;
+    const page = req.query.page || 1
+    const offset = (page - 1)*LIMIT_ITEMS
+    const totalTrips = await Trip.count()
+    console.log(totalTrips)
+    const totalPages = Math.ceil(totalTrips/LIMIT_ITEMS)
     try {
       const userTrips = await Trip.findAll({
         include: [
@@ -21,9 +27,11 @@ router.get('/', Auth, async (req, res) => {
             }
           },
         ],
+        limit: LIMIT_ITEMS,
+        offset: offset
       });
   
-      res.json(userTrips);
+      res.json({trips: userTrips, totalPages});
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
