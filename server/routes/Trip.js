@@ -16,9 +16,6 @@ router.get('/', Auth, async (req, res) => {
   // Retrieve query parameters from the request
   const queryParams = req.query;
 
-  const totalTrips = await Trip.count();
-  const totalPages = Math.ceil(totalTrips / LIMIT_ITEMS);
-
   try {
     let queryOptions = {
       include: [
@@ -31,7 +28,8 @@ router.get('/', Auth, async (req, res) => {
         },
       ],
       limit: LIMIT_ITEMS,
-      offset: offset
+      offset: offset,
+      distinct: true
     };
 
     // Dynamically construct the where clause based on query parameters
@@ -48,6 +46,14 @@ router.get('/', Auth, async (req, res) => {
       });
     }
 
+    // Count the total number of trips based on the query options
+    const totalTrips = await Trip.count(queryOptions);
+    console.log(totalTrips)
+    
+
+    // Calculate the total number of pages based on the total number of trips
+    const totalPages = Math.ceil(totalTrips / LIMIT_ITEMS);
+
     const userTrips = await Trip.findAll(queryOptions);
 
     res.json({ trips: userTrips, totalPages });
@@ -56,6 +62,7 @@ router.get('/', Auth, async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 
 
