@@ -64,7 +64,7 @@ export const Home = () => {
           <div>
         <img id="navLogo" src='/icons/logo.png' />
         </div>
-         {/*} <SearchBar />*/}
+        
             <div className='mobileNotificationDiv'>
             <div onClick={()=>{handleMenu(setIsNotificationOpen, isNotificationOpen)}} className={update?'notImgWrapper circleClass': 'notImgWrapper'}>
                   <img id="iconBell" src="/icons/notification.svg" alt="bell icon" />

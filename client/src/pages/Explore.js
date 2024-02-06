@@ -7,18 +7,24 @@ import './home.css';
 import { PostData } from "../utilities/PostData";
 import { Home } from "./Home";
 import { GetData } from "../utilities/GetData";
+import { SearchToolBox } from "../components/SeachToolBox";
 
 export const Explore = () => {
   const [currentPage, setCurrentPage] = useState(1)
+  const [departParam, setDepartParam] = useState("")
+  const [arrivalParam, setArrivalParam] = useState("")
   const [trips, setTrips] = useState(null)
   const navigate = useNavigate()
   
   
   useEffect(()=>{
       const fetchTrips = async()=>{
+      
         try{
-          const response = await GetData(`/trips?page=${currentPage}`)
-          console.log(response)
+          let param = ""
+          param += departParam?`city_departure=${departParam}&`:''
+         param += arrivalParam?`city_arrival=${arrivalParam}`:''
+          const response = await GetData(`/trips?page=${currentPage}&${param}`)
           setTrips(response)
         }
         catch(err){
@@ -27,10 +33,14 @@ export const Explore = () => {
         
       }
       fetchTrips()
+      
 
-  }, [currentPage])
+  }, [currentPage, departParam, arrivalParam])
 
-  
+  useEffect(() => {
+    setCurrentPage(1);
+}, [departParam, arrivalParam]);
+
   const handleApplication = async (driver_id, TripId)=>{
     const body = {driver_id, TripId}
     const application = await PostData('/users/apply', body)
@@ -47,6 +57,9 @@ export const Explore = () => {
       return (
         <div>
           <Home />
+          <div className="searchToolsWrapper">
+              <SearchToolBox departure={setDepartParam} arrival={setArrivalParam}/>
+          </div>
           {trips.trips && trips.isLoading ? (
             <Spinning />
           ) : trips.error ? (
