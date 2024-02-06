@@ -5,38 +5,59 @@ const User_trip = require('../models/User_trip.js')
 const User = require('../models/User.js')
 const jwt = require('jsonwebtoken')
 const Auth = require('../middlewares/Auth.js');
-
-
+const { Op } = require('sequelize');
 
 
 router.get('/', Auth, async (req, res) => {
-    const LIMIT_ITEMS = 5;
-    const page = req.query.page || 1
-    const offset = (page - 1)*LIMIT_ITEMS
-    const totalTrips = await Trip.count()
-    console.log(totalTrips)
-    const totalPages = Math.ceil(totalTrips/LIMIT_ITEMS)
-    try {
-      const userTrips = await Trip.findAll({
-        include: [
-          {
-            model: User,
-            through: User_trip,
-            attributes: {
-              exclude: ['password']
-            }
-          },
-        ],
-        limit: LIMIT_ITEMS,
-        offset: offset
+  const LIMIT_ITEMS = 5;
+  const page = req.query.page || 1;
+  const offset = (page - 1) * LIMIT_ITEMS;
+
+  // Retrieve query parameters from the request
+  const queryParams = req.query;
+
+  const totalTrips = await Trip.count();
+  const totalPages = Math.ceil(totalTrips / LIMIT_ITEMS);
+
+  try {
+    let queryOptions = {
+      include: [
+        {
+          model: User,
+          through: User_trip,
+          attributes: {
+            exclude: ['password']
+          }
+        },
+      ],
+      limit: LIMIT_ITEMS,
+      offset: offset
+    };
+
+    // Dynamically construct the where clause based on query parameters
+    if (Object.keys(queryParams).length > 0) {
+      queryOptions.where = {};
+
+      Object.keys(queryParams).forEach(param => {
+        if (param !== 'page') { // Exclude 'page' parameter from the where clause
+          // Use Op.iLike for case-insensitive comparisons with PostgreSQL
+          queryOptions.where[param] = {
+            [Op.iLike]: `%${queryParams[param]}%`
+          };
+        }
       });
-  
-      res.json({trips: userTrips, totalPages});
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
     }
-  });
+
+    const userTrips = await Trip.findAll(queryOptions);
+
+    res.json({ trips: userTrips, totalPages });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
   //Need change for better performace in future
 router.get('/mytrips', Auth, async (req, res)=>{
