@@ -48,4 +48,7 @@ Thumbs.db
 
 # Production build
 build/
-public/
+public/*
+server/public/static/css/*.css.map
+server/public/static/js/*.js
+

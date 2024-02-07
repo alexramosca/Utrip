@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: clamp(150px, 30%, 300px);
+    width: clamp(220px, 35%, 300px);
     
     &>img{
         filter: invert(100%);
@@ -37,6 +37,18 @@
     }
     
 }
+.searchToolsWrapper{
+    background-color: #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-bottom: solid 2px rgba(0,0,0,0.2);
+}
+
+
 .searchWrapper{
     display: flex;
     align-items: center;
@@ -266,4 +278,10 @@ datalist{
         height: 180px;
     }
     
+}
+@media screen and (min-width: 768px){
+    .searchToolsWrapper{
+        flex-direction: row;
+        gap: 1.5rem;
+    }
 }

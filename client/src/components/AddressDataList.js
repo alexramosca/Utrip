@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FetchAddress } from "../utilities/FetchAddress";
 
+//This component expects to receive a datalist ID and an input as props
 export const AddressDataList = (props) => {
     const [data, setData] = useState(null);
     

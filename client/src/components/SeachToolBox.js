@@ -8,9 +8,10 @@ export const SearchToolBox = ({departure, arrival})=>{
     return(
         <>
             
-            <SearchBar onChange={setDepartureInput} placeholder="Departure City" />
-            <SearchBar onChange={setArrivalInput} placeholder="Arrival City" />
+            <SearchBar onChange={setDepartureInput} dlId="dlDeparture" input={departureInput} placeholder="Departure" />
+            <SearchBar onChange={setArrivalInput} dlId="dlArrival" input={arrivalInput} placeholder="Arrival" />
             <button
+                className="btnApply"
                 onClick={ ()=>{
                     departure(departureInput)
                     arrival(arrivalInput)
