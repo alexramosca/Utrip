@@ -22,8 +22,8 @@ export const Explore = () => {
       
         try{
           let param = ""
-          param += departParam?`city_departure=${departParam}&`:''
-         param += arrivalParam?`city_arrival=${arrivalParam}`:''
+          param += departParam?`add_departure=${departParam}&`:''
+         param += arrivalParam?`add_arrival=${arrivalParam}`:''
           const response = await GetData(`/trips?page=${currentPage}&${param}`)
           setTrips(response)
         }
