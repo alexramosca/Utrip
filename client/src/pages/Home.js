@@ -85,7 +85,7 @@ export const Home = () => {
               </div>         
             </div>
             <div className={isOpen?"mobileMenu opacity100":"mobileMenu opacity0"} >
-              <ul id="ulMenu">
+              <ul id="ulMenu" className={isOpen?"mobileMenu opacity100":"mobileMenu opacity0"}>
                 <Menu menu = {navMenuItems} />
                 <BtnLogout />
                 </ul>

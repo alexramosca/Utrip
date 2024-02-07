@@ -26,6 +26,9 @@
     padding: 2% 4%;
     background-color: black;
     width: 100vw;
+        &>img{
+            filter: invert(100%);
+        }
     
         &>div>img{
             filter: invert(100%);
@@ -71,6 +74,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    transition: all 0.5s ease-in-out;
 }
 
  .mobileMenu>ul{
@@ -83,13 +87,15 @@
     height: 100%;
     width: 100%;
     background-color: black;
-    transition: all 1s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 .opacity100{
    opacity: 1;
+   z-index: 200;
 }
 .opacity0{
     opacity: 0;
+    z-index: 1;
 }
 
 .navItem{
@@ -100,7 +106,7 @@
 
 
 button{
-    z-index: 999;
+    z-index: 100;
 }
 .painelNav>.navWrapper{
     width: 45%;
