@@ -5,8 +5,7 @@ const User_trip = require('../models/User_trip.js')
 const User = require('../models/User.js')
 const jwt = require('jsonwebtoken')
 const Auth = require('../middlewares/Auth.js');
-const { Op } = require('sequelize');
-
+const { Op, Sequelize } = require('sequelize');
 
 router.get('/', Auth, async (req, res) => {
   const LIMIT_ITEMS = 5;
@@ -38,18 +37,19 @@ router.get('/', Auth, async (req, res) => {
 
       Object.keys(queryParams).forEach(param => {
         if (param !== 'page') { // Exclude 'page' parameter from the where clause
-          // Use Op.iLike for case-insensitive comparisons with PostgreSQL
-          queryOptions.where[param] = {
-            [Op.iLike]: `%${queryParams[param]}%`
-          };
+          // Use Op.substring for containment check
+          queryOptions.where[param] = Sequelize.where(
+            Sequelize.fn('LOWER', Sequelize.col(param)),
+            {
+              [Op.substring]: queryParams[param].toLowerCase()
+            }
+          );
         }
       });
     }
 
     // Count the total number of trips based on the query options
     const totalTrips = await Trip.count(queryOptions);
-    console.log(totalTrips)
-    
 
     // Calculate the total number of pages based on the total number of trips
     const totalPages = Math.ceil(totalTrips / LIMIT_ITEMS);
