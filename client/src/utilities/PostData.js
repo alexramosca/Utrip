@@ -1,6 +1,6 @@
 export const PostData = async(url, body)=>{
     try{
-        const response = await fetch(process.env.REACT_APP_API_BASE_URL+ url, {
+        const response = await fetch((process.env.REACT_APP_API_BASE_URL || 'https://utrip-apiv1.onrender.com/api')+ url, {
             method: 'POST',
             credentials: 'include',
             headers: {

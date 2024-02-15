@@ -25,7 +25,7 @@ export const Create = ()=>{
         }
         const upData = {...data, ...addressObj}
 
-            const response = await axios.post(process.env.REACT_APP_API_BASE_URL + '/trips/create',
+            const response = await axios.post((process.env.REACT_APP_API_BASE_URL || 'https://utrip-apiv1.onrender.com/api')+ '/trips/create',
             {upData},
             {withCredentials: true}
             ,)

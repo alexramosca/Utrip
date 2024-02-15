@@ -25,7 +25,7 @@ export const Home = () => {
       ];
       //use effect to handle live notifications
       useEffect(()=>{
-        const eventSource = new EventSource(process.env.REACT_APP_API_BASE_URL+'/users/sse', {withCredentials: true})
+        const eventSource = new EventSource((process.env.REACT_APP_API_BASE_URL || 'https://utrip-apiv1.onrender.com/api')+'/users/sse', {withCredentials: true})
         eventSource.onmessage = (event) =>{
           const eventData = JSON.parse(event.data)
           if(eventData)
