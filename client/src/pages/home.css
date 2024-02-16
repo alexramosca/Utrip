@@ -4,6 +4,10 @@
     margin: 0;
 }
 
+div{
+    z-index: 5;
+}
+
 .lock{
     overflow: hidden;
 }
@@ -92,10 +96,14 @@
 .opacity100{
    opacity: 1;
    z-index: 200;
+   
 }
 .opacity0{
     opacity: 0;
     z-index: 1;
+    &*:not(ul){
+        z-index: 5;
+       }
 }
 
 .navItem{

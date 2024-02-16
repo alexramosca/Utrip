@@ -19,11 +19,13 @@ export const Explore = () => {
   
   useEffect(()=>{
       const fetchTrips = async()=>{
-      
+        const [arrCity, arrProv] = arrivalParam.split(',').map(part => part.trim());
+        const [depCity, depProv] = departParam.split(',').map(part => part.trim());
+        
         try{
           let param = ""
-          param += departParam?`add_departure=${departParam}&`:''
-         param += arrivalParam?`add_arrival=${arrivalParam}`:''
+          param += departParam?`city_departure=${depCity ?? ''}&prov_departure=${depProv ?? ''}&`:''
+          param += arrivalParam?`city_arrival=${arrCity ?? ''}&prov_arrival=${arrProv ?? ''}&`:''
           const response = await GetData(`/trips?page=${currentPage}&${param}`)
           setTrips(response)
         }

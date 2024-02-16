@@ -1,10 +1,24 @@
 export const FetchAddress = async(query)=>{
-    const url =
-        "http://api.positionstack.com/v1/forward?access_key=9cec2106fdf303b9e82a25feb084b836&country=ca&query=";
+    
         try {
-            let response = await fetch(url + query);
+            let response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${query}&apiKey=f1179df6b4274d7d8f376d1a24edd808`);
             let dataResponse = await response.json();
-            return dataResponse
+            let returnAddresses = []
+            if (response.ok){
+                returnAddresses = dataResponse.features.map((item, index)=>{
+                    return {
+                        data: {
+                            locality: item.properties.city,
+                        region_code: item.properties.state_code,
+                        label: item.properties.formatted
+                        }
+                        
+                    }
+                })
+            }
+            console.log(returnAddresses)
+            return returnAddresses
+            
         }
         catch(err){
             console.log(err)

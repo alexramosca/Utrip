@@ -11,19 +11,20 @@ export const Create = ()=>{
             e.preventDefault()
         
         const add_departure = await FetchAddress(data.add_departure)
-        console.log("departure", add_departure.data)
-        const cities = add_departure.data.find((address)=> data.add_departure === address.label)
+        console.log("departure", add_departure)
+        const cities = add_departure.find((address)=> data.add_departure.toLowerCase() === address.data.label.toLowerCase())
+        console.log('cities', cities)
         const dest_address = await FetchAddress(data.add_arrival)
-        const destAddress = dest_address.data.find((address)=>data.add_arrival === address.label)
-        console.log("arrival", destAddress)
+        const destAddress = dest_address.find((address)=> data.add_arrival.toLowerCase() === address.data.label.toLowerCase())
        
         const addressObj = {
-            city_departure: cities.locality,
-            prov_departure: cities.region_code,
-            city_arrival: destAddress.locality,
-            prov_arrival: destAddress.region_code,
+            city_departure: cities.data.locality,
+            prov_departure: cities.data.region_code,
+            city_arrival: destAddress.data.locality,
+            prov_arrival: destAddress.data.region_code,
         }
         const upData = {...data, ...addressObj}
+        console.log(upData)
 
             const response = await axios.post((process.env.REACT_APP_API_BASE_URL || 'https://utrip-apiv1.onrender.com/api')+ '/trips/create',
             {upData},
@@ -38,7 +39,7 @@ export const Create = ()=>{
             }
         }
         catch(err){
-            alert(err)
+            console.log(err)
         }
     }
     const {register, handleSubmit, reset} = useForm()
