@@ -10,7 +10,7 @@ export const AddressDataList = (props) => {
         const fetchData = async () => {
             try {
                 let response = await FetchAddress( props.input);
-                console.log(response.data)
+                console.log(response)
                 setData(response);
             } catch (err) {
                 console.log(err);
@@ -29,8 +29,8 @@ export const AddressDataList = (props) => {
     return (
         <datalist id={props.id}>
             {data
-                ? data.data.map((address, index) => {
-                      return <option key={index}>{address.label}</option>;
+                ? data.map((address, index) => {
+                      return <option key={index}>{address.data.label}</option>;
                   })
                 : ""}
         </datalist>
