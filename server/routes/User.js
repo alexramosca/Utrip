@@ -122,8 +122,8 @@ router.get('/checkAuth', Auth , async(req, res)=>{
         res.status(401).json({isAuthorized: false})
     }
 })
-//change to post in production
-router.get('/logout', async (req, res) => {
+
+router.post('/logout', async (req, res) => {
     try {
       res.status(200).clearCookie('token', { path: '/' }).json({msg: 'Logged out successfully'});
     } catch (error) {

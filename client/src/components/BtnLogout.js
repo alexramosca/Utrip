@@ -1,24 +1,26 @@
-import useGetFetch  from "../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { TestComp } from "./TestComp";
+
 
 
 export const BtnLogout = () => {
   const navigate = useNavigate();
-  const [logout, setLogout] = useState(false);
-
- 
-
-  const handleLogout = () => {
-        setLogout(true)
+  
+  const handleLogout = async () => {
+        try{
+          let response = await fetch(`${process.env.REACT_APP_API_BASE_URL ?? 'https://utrip-apiv1.onrender.com/api'}/users/logout`, {
+            method: 'POST',
+            credentials: 'include'
+          })
+          response.ok && navigate('/login')
+        }
+        
+        catch(err){
+          console.log(err)
+        }
   };
  
  
   return (
-    <>
-    {logout?<TestComp />: undefined}
-    <a className="navItem" onClick={handleLogout}>Logout</a>
-    </>
+    <a className="navItem" onClick={()=>{handleLogout()}}>Logout</a>
   );
 };

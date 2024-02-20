@@ -8,7 +8,7 @@ export const NotificationLine = (props)=>{
         
         <div className="notLineWrapper">
             
-           <img src={"/profilePictures/"+RequestUser.profilePicture} alt="profile picture" />
+           <img src={`${process.env.REACT_APP_API_BASE_URL_PUBLIC ?? 'https://utrip-apiv1.onrender.com'}` + "/profilePictures/"+RequestUser.profilePicture} alt="profile picture" />
             <div>
                 
                 {RequestUser.firstName} {RequestUser.lastName} applied for a trip with you:
