@@ -46,10 +46,6 @@ export const Explore = () => {
   const handleApplication = async (driver_id, TripId)=>{
     const body = {driver_id, TripId}
     const application = await PostData('/users/apply', body)
-    if(application){
-      console.log(application)
-    }
-  
   }
   
   

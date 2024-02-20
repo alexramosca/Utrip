@@ -11,9 +11,7 @@ export const Create = ()=>{
             e.preventDefault()
         
         const add_departure = await FetchAddress(data.add_departure)
-        console.log("departure", add_departure)
         const cities = add_departure.find((address)=> data.add_departure.toLowerCase() === address.data.label.toLowerCase())
-        console.log('cities', cities)
         const dest_address = await FetchAddress(data.add_arrival)
         const destAddress = dest_address.find((address)=> data.add_arrival.toLowerCase() === address.data.label.toLowerCase())
        
@@ -24,7 +22,6 @@ export const Create = ()=>{
             prov_arrival: destAddress.data.region_code,
         }
         const upData = {...data, ...addressObj}
-        console.log(upData)
 
             const response = await axios.post((process.env.REACT_APP_API_BASE_URL || 'https://utrip-apiv1.onrender.com/api')+ '/trips/create',
             {upData},

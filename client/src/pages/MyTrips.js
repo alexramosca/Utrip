@@ -23,7 +23,6 @@ export const MyTrips = ()=>{
         }, [])
 
         if(trips){
-            console.log(trips)
             return (
                 <>
                 <Home />

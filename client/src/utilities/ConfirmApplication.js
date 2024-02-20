@@ -5,7 +5,7 @@ export const ConfirmApplication = async (application_id, requester_id)=>{
         const data = {application_id, requester_id}
         const response = await PostData('/users/applications/confirm', data)
     
-            console.log(response)
+           
         
     }
     catch{

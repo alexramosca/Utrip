@@ -2,8 +2,6 @@ import { Children } from "react";
 
 export const Trip = (props)=>{
     const driverUser = props.trip.Users.find((user) => user.User_trip.isDriver);
-    console.log(process.env.REACT_APP_API_BASE_URL_PUBLIC)
-    
     const {children} = props
     return(
         <div className="tripWrapper">

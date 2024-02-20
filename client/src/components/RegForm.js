@@ -63,9 +63,7 @@ export const RegForm = () => {
         alert("user created");
         window.location.href="/login"
     }
-    else {
-        console.log(await response.json())
-    }
+    
     
     
     

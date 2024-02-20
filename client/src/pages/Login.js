@@ -45,7 +45,6 @@ export const Login = ()=>{
          e.preventDefault()
         try{
             const url = `${(process.env.REACT_APP_API_BASE_URL || 'https://utrip-apiv1.onrender.com/api')}/users/login`;
-            console.log(url)
             const body = JSON.stringify({
             email: data.email,
             password: data.password,

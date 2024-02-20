@@ -10,7 +10,6 @@ export const AddressDataList = (props) => {
         const fetchData = async () => {
             try {
                 let response = await FetchAddress( props.input);
-                console.log(response)
                 setData(response);
             } catch (err) {
                 console.log(err);

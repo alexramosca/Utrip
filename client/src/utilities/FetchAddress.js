@@ -16,7 +16,7 @@ export const FetchAddress = async(query)=>{
                     }
                 })
             }
-            console.log(returnAddresses)
+            
             return returnAddresses
             
         }

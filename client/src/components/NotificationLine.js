@@ -1,7 +1,6 @@
 import { ConfirmApplication } from "../utilities/ConfirmApplication"
 
 export const NotificationLine = (props)=>{
-    console.log('props', props)
     const RequestUser = props.application.RequestUser
     const trip = props.application.Trip
     return(
